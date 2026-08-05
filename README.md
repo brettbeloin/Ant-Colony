@@ -3,3 +3,4 @@
 
 ## Members
 - Brett Beloin
+- Jeremy Williams
