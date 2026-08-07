@@ -1,0 +1,71 @@
+## .NET / Visual Studio ##
+bin/
+obj/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Ww][Ii][Nn]32/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Oo]bj/
+[Oo]ut/
+[Ll]og/
+[Ll]ogs/
+
+# Visual Studio cache/options
+.vs/
+*.VC.db
+*.VC.VC.opendb
+
+# NuGet
+*.nupkg
+*.snupkg
+**/[Pp]ackages/*
+!**/[Pp]ackages/build/
+*.nuget.props
+*.nuget.targets
+
+# MSTest / test results
+[Tt]est[Rr]esult*/
+[Bb]uild[Ll]og.*
+
+# xUnit / test coverage
+*.trx
+*.coverage
+*.coveragexml
+coverage*.json
+coverage*.xml
+coverage*.info
+[Cc]overage[Rr]esults*/
+TestResults/
+
+# Rider / JetBrains
+.idea/
+*.sln.iml
+
+# ReSharper / DotSettings (user-specific)
+*.[Rr]e[Ss]harper
+*.DotSettings.user
+
+# Neovim / Vim
+*.swp
+*.swo
+*.swn
+Session.vim
+.netrwhist
+tags
+*.un~
+
+# OS files
+.DS_Store
+Thumbs.db
