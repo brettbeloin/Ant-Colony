@@ -6,7 +6,7 @@ namespace Main
     {
         public static void Main(string[] args)
         {
-            List<string> foo = new List<string> { "Hello,", "comma", "World", "!" };
+            List<string> foo = new List<string> { "Hello,", "comma", "World", "!", "Hooray"};
             PromptForMenuSelection(foo, false);
         }
     }
