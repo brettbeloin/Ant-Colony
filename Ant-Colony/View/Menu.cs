@@ -7,10 +7,28 @@ namespace Ant_Colony.View
 {
     internal static class Menu
     {
+        public static void WelcomePlayer()
+        {
+            Console.WriteLine("Welcome to:");
+            PrintLogo();
+        }
+
         public static void PrintLogo()
         {
-            //TODO: get a fancy ascii ant farm text to put here
-            Console.WriteLine("ant-farm");
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine(""""""""" 
+                       db                                   ,ad8888ba,                88                                         
+                      d88b                      ,d         d8"'    `"8b               88                                         
+                     d8'`8b                     88        d8'                         88                                         
+                    d8'  `8b      8b,dPPYba,  MM88MMM     88              ,adPPYba,   88   ,adPPYba,   8b,dPPYba,   8b       d8  
+                   d8YaaaaY8b     88P'   `"8a   88        88             a8"     "8a  88  a8"     "8a  88P'   `"8a  `8b     d8'  
+                  d8""""""""8b    88       88   88        Y8,            8b       d8  88  8b       d8  88       88   `8b   d8'   
+                 d8'        `8b   88       88   88,        Y8a.    .a8P  "8a,   ,a8"  88  "8a,   ,a8"  88       88    `8b,d8'    
+                d8'          `8b  88       88   "Y888       `"Y8888Y"'    `"YbbdP"'   88   `"YbbdP"'   88       88      Y88'     
+                                                                                                                        d8'      
+                                                                                                                       d8'        
+                """"""""");
+            Console.ResetColor();
         }
 
         public static void PrintResourceManagementStats()
@@ -34,8 +52,9 @@ namespace Ant_Colony.View
             throw new NotImplementedException();
         }
 
-        public static void PrintItemsInInventory()
+        public static void PrintItems(List<String> itemList)
         {
+            //TODO: replace the string with items once the class is implemented
             throw new NotImplementedException();
         }
 
@@ -44,8 +63,7 @@ namespace Ant_Colony.View
             //TODO: make the inputed list of items of the item class when that is implemented
             throw new NotImplementedException();
         }
-
-        
+ 
         public static void PrintCombatScreen()
         {
             throw new NotImplementedException();
