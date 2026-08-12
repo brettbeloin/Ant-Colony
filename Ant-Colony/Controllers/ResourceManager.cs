@@ -4,21 +4,37 @@ using System.Text;
 
 namespace Ant_Colony.Controllers
 {
-    internal static class ResourceManager
+    public static class ResourceManager
     {
-        public static int Food { get; private set; }
+        public static int Food { get;
+            private set { field = Math.Max(0, value); }
+        } = 0;
 
-        public static int Leaves { get; private set; }
+        public static int Leaves { get;
+            private set { field = Math.Max(0, value); } 
+        }
 
-        public static void GatherLeaves(int AmountOfAnts, int AmountPerAnt)
+        /// <summary>
+        /// Call this to increase the amount of leaves stored
+        /// </summary>
+        /// <param name="AmountOfAnts">The amount of ants you spend to get leaves</param>
+        /// <param name="AmountPerAnt">The effeciency of the ants getting leaves</param>
+        public static void GatherLeaves(int AmountOfAnts, int AmountPerAnt = 1)
         {
             Leaves += AmountOfAnts * AmountPerAnt;
         }
  
-        public static void GatherFood(int AmountOfAnts, int AmountPerAnt)
+        /// <summary>
+        /// Call this to increase the amount of food used by the player. 
+        /// This costs leaves and gains food, the amount of food gained is limited by the amount of leaves consumed and Amount per Leaf.
+        /// The amout of leaves consumed is limited by the amount of leaves held and the amount of ants used  
+        /// </summary>
+        /// <param name="AmountOfAnts">Every ant tries to grab a leaf, then spend all the leaves that the ants get to turn into food</param>
+        /// <param name="AmountPerLeaf">The effeciency of the leaves turning into food</param>
+        public static void GatherFood(int AmountOfAnts, int AmountPerLeaf = 1)
         {
-            Leaves -= AmountOfAnts;
-            Food += AmountOfAnts * AmountPerAnt;
+            int leavesConsumed = Math.Min(Leaves - AmountOfAnts, Leaves);
+            Food += leavesConsumed * AmountPerLeaf;
         }
 
         /// <summary>
@@ -28,13 +44,9 @@ namespace Ant_Colony.Controllers
         /// <returns>Returns the amount of food eaten, if the amount attempted to eat is more than the food avaliable, all the food will be eaten</returns>
         public static int EatFood(int amount)
         { 
-            int foodLeft = Food - amount;
-            if (foodLeft < 0 )
-            {
-                amount = Food;
-                Food = 0;
-            } 
-            return amount;
+            int foodConsumed = Math.Min(Food - amount, Food);
+            Food -= foodConsumed;
+            return foodConsumed;
         }
     
     }
