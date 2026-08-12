@@ -4,7 +4,9 @@ using System.Text;
 
 namespace Ant_Colony.Models
 {
-    internal class BulletAnt : BaseAnt
+    public enum DungeonEvents
     {
+        BATTLE,
+        TREASURE,
     }
 }
