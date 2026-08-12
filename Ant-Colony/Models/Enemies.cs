@@ -8,7 +8,7 @@ namespace Ant_Colony.Models
     {
         public  int atk { get; set; }
         public int def  { get; set; }
-        public int spd { get; set; };
+        public int spd { get; set; }
     }
     
     public abstract class Enemies
