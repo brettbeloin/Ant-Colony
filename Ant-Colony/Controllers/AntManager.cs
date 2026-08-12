@@ -4,6 +4,12 @@ using System.Text;
 
 namespace Ant_Colony.Controllers
 {
+    public enum AntTypes
+    {
+        WORKER,
+        LEAF_CUTTER,
+        BROOD,
+    }
     public static class AntManager
     {
         public static int VirtWorkerAntAmount { get; 
@@ -17,18 +23,7 @@ namespace Ant_Colony.Controllers
                 field = Math.Clamp(value, 0, VirtWorkerAntAmount);
             }
         } = 0;
-
-        public static int VirtBulletAntAmount { get; 
-            private set { field = Math.Max(value, 0); }
-        } = 0;
-        public static int UsedVirtBulletAnt { get; 
-            private set 
-            {
-                field = Math.Clamp(value, 0, VirtBulletAntAmount);
-            } 
-        } = 0;
-
-
+ 
         public static int VirtLeafCutterAntAmount { get; 
             private set
             {
@@ -81,6 +76,7 @@ namespace Ant_Colony.Controllers
             Larvae += foodSpent * LarvaePerAnt;
         }
 
+        
         public static void GrowLarvae()
         {
             throw new NotImplementedException();

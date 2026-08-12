@@ -37,14 +37,22 @@ namespace Ant_Colony.View
         }
 
         public static int MainMenu(bool hasEvent = false)
-        { 
+        {
             //TODO: ask event manager for event if hasEvent is true
-            throw new NotImplementedException();
+            string[] options = { "Gather Leaves", "Tend Aphid Farm", "Nourish Larvae", "Enter The Dungeon" };
+            return CIO.PromptForMenuSelection(options, false);
         } 
 
-        public static int SelectAntAllocationAmounts()
+        /// <summary>
+        /// Prompts the player for an ant type and the amount of ants 
+        /// </summary>
+        /// <param name="max">the max number of ants that the use can ask for</param>
+        /// <returns>returns an array of length 2 that holds an ant type as an int in the first slot, and the amount in the second</returns>
+        public static int[] SelectAntTypeAndAmount(int max)
         {
-            throw new NotImplementedException();
+            int antType = SelectAntType();
+            int amount = CIO.PromptForInt("Type the amount of ants:", 0, max);
+            return [antType, amount];
         }
 
         public static int SelectCombatOptions()
@@ -68,7 +76,12 @@ namespace Ant_Colony.View
         {
             throw new NotImplementedException();
         }
-
+        
+        public static int SelectAntType()
+        {
+            string[] antTypes = { "Worker Ant", "Leaf Cutter Ant", "Brood Ant" };
+            return CIO.PromptForMenuSelection(antTypes, false);
+        }
         
     } 
 }
