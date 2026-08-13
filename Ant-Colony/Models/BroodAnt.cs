@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Ant_Colony.Models
 {
-    internal class BroodAnt : BaseAnt
+    public class BroodAnt : BaseAnt
     {
         public static new int LarveAmount { get; } = 2;
     }
