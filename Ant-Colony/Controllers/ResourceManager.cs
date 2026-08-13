@@ -48,10 +48,14 @@ namespace Ant_Colony.Controllers
             Food -= foodConsumed;
             return foodConsumed;
         }
-    
+        
+        /// <summary>
+        /// Resets the food/leaves to 0
+        /// </summary>
         public static void ResetResources()
         {
-
+            Food = 0;
+            Leaves = 0;
         }
     }
 }
