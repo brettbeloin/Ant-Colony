@@ -7,19 +7,29 @@ namespace Ant_Colony.Controllers
 {
     public class DungeonManager
     {
+        List<BaseAnt> ants;
+        int totalXp = 0;
         //DO NOT MAKE STATIC
-        public static void RunDungeon()
+        public void RunDungeon()
         {
             throw new NotImplementedException();
         }
 
-        public static void SetupDungeon()
+        public void SetupDungeon()
         {
             throw new NotImplementedException();
         }
-        public static List<Enemies> EnemySetup()
+
+
+        public List<Enemies> EnemySetup()
         {
             throw new NotImplementedException();
+        }
+
+        public void IncreaseXp()
+        {
+            throw new NotImplementedException();
+            
         }
 
     }
