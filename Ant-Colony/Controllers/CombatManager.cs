@@ -3,31 +3,18 @@ namespace Ant_Colony.Controllers;
 public static class CombatManager
 {
     public static bool IsAlive { get; set; }
-    
+
     static CombatManager()
     {
         throw new NotImplementedException();
     }
-    
-<<<<<<< HEAD
-}
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace Ant_Colony.Controllers
-{
-    public class CombatManager
+    public static int DetermineXp()
     {
-
-    }
-}
-=======
-    public static int DetermineXp(){ 
         /*
          float x = healthLostRatio (0 to 1)
          int reward = 0;
-          
+
          if x <= 0.20f:
              reward = base
          else:
@@ -35,6 +22,4 @@ namespace Ant_Colony.Controllers
        */
         throw new NotImplementedException();
     }
-    
 }
->>>>>>> 7107646 (updated enemy class && create subclasses)
