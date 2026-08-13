@@ -49,5 +49,9 @@ namespace Ant_Colony.Controllers
             return foodConsumed;
         }
     
+        public static void ResetResources()
+        {
+
+        }
     }
 }
