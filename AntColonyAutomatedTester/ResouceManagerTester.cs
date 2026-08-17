@@ -29,15 +29,15 @@ namespace AntColonyAutomatedTester
             ResourceManager.ResetResources();
 
             //Act and Assert
-            ResourceManager.GatherLeaves(ants, amountPerAnt);
+            ResourceManager.GatherLeaves(int.MaxValue);
             ResourceManager.GatherFood(ants, amountPerAnt);
             Assert.Equal(correctResults, ResourceManager.Food );
         }
  
         [Theory]
-        [InlineData(1,1,10,1)]
-        [InlineData(2,2,10,4)]
-        [InlineData(6,2,10,10)]
+        [InlineData(1,1,10,9)]
+        [InlineData(2,2,10,8)]
+        [InlineData(6,2,10,4)]
         public void GatherFood_LooseCorrectAmountOfLeaves(int ants, int amountPerAnt, int amountOfLeaves,int correctResults)
         { 
             // Arrange
