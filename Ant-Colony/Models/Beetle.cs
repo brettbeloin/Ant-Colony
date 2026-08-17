@@ -6,12 +6,12 @@ public class Beetle : Enemies
     {
     }
     
-    public override bool Attack()
+    public override int Attack()
     {
         throw new NotImplementedException();
     }
 
-    public override bool Defend()
+    public override int Defend()
     {
         throw new NotImplementedException();
     }

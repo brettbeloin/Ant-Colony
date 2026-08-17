@@ -1,3 +1,4 @@
+using Ant_Colony.Models;
 namespace Ant_Colony.Controllers;
 
 public static class CombatManager
@@ -9,17 +10,26 @@ public static class CombatManager
         throw new NotImplementedException();
     }
 
-    public static int DetermineXp()
+    public static float HealthLostRatio()
     {
-        /*
-         float x = healthLostRatio (0 to 1)
-         int reward = 0;
+        return float.MaxValue;
+    }
 
-         if x <= 0.20f:
-             reward = base
-         else:
-             reward = 5 + (base - 5) * e^(-k * (x - 0.20))
-       */
-        throw new NotImplementedException();
+    public static int DetermineXp(int k, int e, Enemies enemies)
+    {
+        
+        float x = HealthLostRatio();
+           int reward = 0;
+
+           if (x <= 0.20f)
+           {
+               reward = enemies.Exp;
+           }
+           else
+           {
+               reward = 5 + (enemies.Exp - 5) * Convert.ToInt32(Math.Pow(e, (-k * (x - 0.20))));
+           }
+           
+           return reward;
     }
 }
