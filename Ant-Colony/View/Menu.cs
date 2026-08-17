@@ -1,12 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Ant_Colony.Controllers;
 using CSC160_ConsoleMenu;
 
 namespace Ant_Colony.View
 {
     internal static class Menu
     {
+        /// <summary>
+        /// Use this to print messages outside of full menu functions
+        /// </summary>
+        /// <param name="message">The message shown to the player</param>
+        /// <param name="withLinebreak">If true adds a new line at the end of the message</param>
+        /// <param name="foregroundColor">The color the text is</param>
+        /// <param name="backgroundColor">The color the text is highlighted with</param>
+        public static void Print(string message, bool withLinebreak = true, ConsoleColor foregroundColor = ConsoleColor.White, ConsoleColor backgroundColor = ConsoleColor.Black)
+        {
+            Console.ForegroundColor = foregroundColor;
+            Console.BackgroundColor = backgroundColor;
+            Console.Write(message);
+            if (withLinebreak)
+            {
+                Console.Write("\n");
+            }
+            Console.ResetColor();
+        }
         public static void WelcomePlayer()
         {
             Console.WriteLine("Welcome to:");
@@ -15,8 +34,7 @@ namespace Ant_Colony.View
 
         public static void PrintLogo()
         {
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine(""""""""" 
+            Print(""""""""" 
                        db                                   ,ad8888ba,                88                                         
                       d88b                      ,d         d8"'    `"8b               88                                         
                      d8'`8b                     88        d8'                         88                                         
@@ -27,8 +45,7 @@ namespace Ant_Colony.View
                 d8'          `8b  88       88   "Y888       `"Y8888Y"'    `"YbbdP"'   88   `"YbbdP"'   88       88      Y88'     
                                                                                                                         d8'      
                                                                                                                        d8'        
-                """"""""");
-            Console.ResetColor();
+                """"""""", true, ConsoleColor.Red);
         }
 
         public static void PrintResourceManagementStats()
@@ -50,7 +67,7 @@ namespace Ant_Colony.View
         /// <returns>returns an array of length 2 that holds an ant type as an int in the first slot, and the amount in the second</returns>
         public static int[] SelectAntTypeAndAmount(int max)
         {
-            int antType = SelectAntType();
+            int antType = SelectAntType("Please select an ant type to allocate");
             int amount = CIO.PromptForInt("Type the amount of ants:", 0, max);
             return [antType, amount];
         }
@@ -77,8 +94,9 @@ namespace Ant_Colony.View
             throw new NotImplementedException();
         }
         
-        public static int SelectAntType()
+        public static int SelectAntType(string prompt = "Please Select an ant type")
         {
+            Print(prompt, true, ConsoleColor.Blue);
             string[] antTypes = { "Worker Ant", "Leaf Cutter Ant", "Brood Ant" };
             return CIO.PromptForMenuSelection(antTypes, false);
         }
