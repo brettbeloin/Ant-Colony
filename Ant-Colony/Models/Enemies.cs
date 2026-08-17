@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Ant_Colony.Controllers;
 
 namespace Ant_Colony.Models
 {
@@ -41,12 +42,14 @@ namespace Ant_Colony.Models
             IsBoss  = isBoss;
         }
 
-        public abstract bool Attack();
+        public abstract int Attack();
         
-        public abstract bool Defend();
+        public abstract int Defend();
 
         public int DetermineLevel()
         {
+            
+            return Lvl;
             throw new NotImplementedException(); 
         }
 
