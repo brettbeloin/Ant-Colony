@@ -75,14 +75,14 @@ namespace Ant_Colony.Controllers
             }
         }
 
-        private static BaseAnt InstantiateAnt(int antType)
+        public static BaseAnt InstantiateAnt(int antType)
         {
             switch (antType) {
                 case (int)AntTypes.WORKER: return new WorkerAnt();
                 case (int)AntTypes.LEAF_CUTTER: return new LeafCutterAnt();
                 case (int)AntTypes.BROOD: return new BroodAnt();
+                default: return new BaseAnt();
             }
-            return null;
         }
 
         public static void AllocateAnts()
