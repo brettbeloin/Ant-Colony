@@ -8,7 +8,8 @@ namespace Ant_Colony.Controllers
     public class DungeonManager
     {
         List<BaseAnt> ants;
-        int totalXp = 0;
+        int expForLevelUp = 0;
+        int totalExp = 0;
         //DO NOT MAKE STATIC
         public void RunDungeon()
         {
@@ -26,11 +27,39 @@ namespace Ant_Colony.Controllers
             throw new NotImplementedException();
         }
 
-        public void IncreaseXp()
+        public void SetXpForLevelUp()
         {
-            throw new NotImplementedException();
-            
+            if(expForLevelUp == 0)
+            {
+                expForLevelUp = 500;
+            }
+            else
+            {
+                expForLevelUp += 500;
+            }
         }
 
+        public void IncreaseXp(Enemies enemy)
+        {
+            totalExp += enemy.Exp;
+        }
+
+        public void CheckForLevelUp()
+        {
+            bool AnotherLevelUpNeeded = true;
+            do
+            {
+                if (totalExp >= expForLevelUp)
+                {
+                    totalExp -= expForLevelUp;
+                    SetXpForLevelUp();
+                    foreach (BaseAnt ant in ants)
+                    {
+                        ant.LevelUp();
+                    }
+                }
+                AnotherLevelUpNeeded = totalExp >= expForLevelUp;
+            } while (AnotherLevelUpNeeded);
+        }
     }
 }
