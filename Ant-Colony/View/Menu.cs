@@ -26,11 +26,7 @@ namespace Ant_Colony.View
             }
             Console.ResetColor();
         }
-        public static void WelcomePlayer()
-        {
-            Console.WriteLine("Welcome to:");
-            PrintLogo();
-        }
+
 
         public static void PrintLogo()
         {
@@ -48,15 +44,58 @@ namespace Ant_Colony.View
                 """"""""", true, ConsoleColor.Red);
         }
 
-        public static void PrintResourceManagementStats()
+        /// <summary>
+        /// prints a bar :
+        /// -------------
+        /// </summary>
+        /// <param name="length">The length of the bar</param>
+        /// <param name="color">The color of the bar, Defaults to white</param>
+        public static void PrintBar(uint length = 10, ConsoleColor color = ConsoleColor.White)
         {
-            throw new NotImplementedException();
+            
+            string bar = "";
+            for (int i = 0; i < length; i++)
+            {
+                bar += "-";
+            }
+            Print(bar, true, color);
         }
 
-        public static int MainMenu(bool hasEvent = false)
+        /// <summary>
+        /// Use this to print out a multitude of stats,
+        /// You may be wondering why this isnt 'PrintResourceManagerStats' and just grabs things from the static classes.
+        /// The reason it is not like that is to maintain class independence, It is hard to keep things distinct for a game,
+        /// but I would like for as many pieces to be independent as possible so that we can reuse pieces and keep things clean.
+        /// </summary>
+        /// <param name="stats">an array of strings that will be printed as stats, I recomend using string interpolation for nice formating</param>
+        /// <param name="color">The color that the stats will be printed in, will be Yellow by default, Yellow will be my 'information' color</param>
+        public static void PrintStats(string[] stats, ConsoleColor color = ConsoleColor.Yellow)
         {
-            //TODO: ask event manager for event if hasEvent is true
+            PrintBar(20, color);
+            foreach (string stat in stats)
+            {
+                Print(stat, true, color);
+            }
+            PrintBar(20, color);
+        }
+
+        /// <summary>
+        /// This is the main menu option select for the resource manager
+        /// This prompts the player to Gather leaves, tend aphid farms, nourish larvae, or enter the dungeon + your extra options
+        /// </summary>
+        /// <param name="extraOptions">Null by default, extra options asks the player for more</param>
+        /// <returns>returns an int from 1 to the amount of options avaliable</returns>
+        public static int MainMenu(string[]? extraOptions = null )
+        {
+            Print("Please choose an action", true, ConsoleColor.Blue);
             string[] options = { "Gather Leaves", "Tend Aphid Farm", "Nourish Larvae", "Enter The Dungeon" };
+            if (extraOptions != null)
+            { 
+                foreach(string option in extraOptions)
+                { 
+                    options.Append(option);
+                }
+            }
             return CIO.PromptForMenuSelection(options, false);
         } 
 
@@ -68,7 +107,8 @@ namespace Ant_Colony.View
         public static int[] SelectAntTypeAndAmount(int max)
         {
             int antType = SelectAntType("Please select an ant type to allocate");
-            int amount = CIO.PromptForInt("Type the amount of ants:", 0, max);
+
+            int amount = CIO.PromptForInt($"Type the amount of ants: (0 - {max})\n", 0, max);
             return [antType, amount];
         }
 
@@ -94,6 +134,11 @@ namespace Ant_Colony.View
             throw new NotImplementedException();
         }
         
+        /// <summary>
+        /// Prompts the player for an ant type
+        /// </summary>
+        /// <param name="prompt">Changes the default prompt</param>
+        /// <returns>returns an int for the type of ant, ranging from 0-2</returns>
         public static int SelectAntType(string prompt = "Please Select an ant type")
         {
             Print(prompt, true, ConsoleColor.Blue);
