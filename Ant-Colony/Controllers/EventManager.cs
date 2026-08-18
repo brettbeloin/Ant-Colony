@@ -18,7 +18,7 @@ namespace Ant_Colony.Controllers
         public static int OverworldEventSetter()
         {
             Array overworldEvents = Enum.GetValues(typeof(OverworldEvents));
-            return rnd.Next(overworldEvents.Length);
+            return rnd.Next(overworldEvents.Length); 
         }
     }
 }

@@ -7,6 +7,6 @@ namespace Ant_Colony.Models
     public enum OverworldEvents
     {
         MOLDY_LEAVES,
-        SICK_LARVA,
+        SICK_LARVA, 
     }
 }
