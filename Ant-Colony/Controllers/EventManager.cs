@@ -11,7 +11,6 @@ namespace Ant_Colony.Controllers
         {
             Random rnd = new Random();
             Array dunEvents = Enum.GetValues(typeof(DungeonEvents));
-
             return rnd.Next(dunEvents.Length);
         }
     }
