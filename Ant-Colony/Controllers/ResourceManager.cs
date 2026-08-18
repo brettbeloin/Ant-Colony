@@ -11,8 +11,8 @@ namespace Ant_Colony.Controllers
         } = 0;
 
         public static int Leaves { get;
-            private set { field = Math.Max(0, value); } 
-        }
+            private set { field = Math.Max(0, value); }
+        } = 0; 
 
         /// <summary>
         /// Call this to increase the amount of leaves stored
@@ -21,7 +21,7 @@ namespace Ant_Colony.Controllers
         /// <param name="AmountPerAnt">The effeciency of the ants getting leaves</param>
         public static void GatherLeaves(int AmountOfAnts, int AmountPerAnt = 1)
         {
-            Leaves += AmountOfAnts * AmountPerAnt;
+            Leaves += (AmountOfAnts * AmountPerAnt);
         }
  
         /// <summary>
@@ -33,8 +33,9 @@ namespace Ant_Colony.Controllers
         /// <param name="AmountPerLeaf">The effeciency of the leaves turning into food</param>
         public static void GatherFood(int AmountOfAnts, int AmountPerLeaf = 1)
         {
-            int leavesConsumed = Math.Min(Leaves - AmountOfAnts, Leaves);
-            Food += leavesConsumed * AmountPerLeaf;
+            int leavesConsumed = Math.Min(AmountOfAnts, Leaves);
+            Leaves -= leavesConsumed;
+            Food += (leavesConsumed * AmountPerLeaf);
         }
 
         /// <summary>
@@ -48,6 +49,14 @@ namespace Ant_Colony.Controllers
             Food -= foodConsumed;
             return foodConsumed;
         }
-    
+        
+        /// <summary>
+        /// Resets the food and leaves to 0
+        /// </summary>
+        public static void ResetResources()
+        {
+            Food = 0;
+            Leaves = 0;
+        }
     }
 }
