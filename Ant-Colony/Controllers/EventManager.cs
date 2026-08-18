@@ -7,11 +7,18 @@ namespace Ant_Colony.Controllers
 {
     public static class EventManager
     {
+        private static Random rnd = new Random();
+
         public static int DungeonEventGetter()
         {
-            Random rnd = new Random();
             Array dunEvents = Enum.GetValues(typeof(DungeonEvents));
             return rnd.Next(dunEvents.Length);
+        }
+
+        public static int OverworldEventSetter()
+        {
+            Array overworldEvents = Enum.GetValues(typeof(OverworldEvents));
+            return rnd.Next(overworldEvents.Length); 
         }
     }
 }
