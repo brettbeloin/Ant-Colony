@@ -1,17 +1,19 @@
-﻿using System;
+﻿using Ant_Colony.Models;
+using Ant_Colony.View;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Ant_Colony.Controllers
 {
-    public enum AntTypes
-    {
-        WORKER,
-        LEAF_CUTTER,
-        BROOD,
-    }
     public static class AntManager
-    {
+    { 
+        public enum AntTypes
+        {
+            WORKER,
+            LEAF_CUTTER,
+            BROOD,
+        }
         public static int VirtWorkerAntAmount { get; 
             private set
             {
@@ -57,7 +59,32 @@ namespace Ant_Colony.Controllers
                 field = Math.Max(0, value); 
             } 
         } = 0;
-        
+
+        public static List<BaseAnt> AntSwarm { get; private set; } = new List<BaseAnt>();
+
+        public static void CreateAntSwarm()
+        {   
+            List<BaseAnt> swarm = new List<BaseAnt>();
+            while (swarm.Count < 10)
+            {
+                int[] antTypeAndAmount = Menu.SelectAntTypeAndAmount(10);
+                for(int i = 0; i < antTypeAndAmount[1]; i++)
+                {
+                    swarm.Add(InstantiateAnt(antTypeAndAmount[0]));
+                }
+            }
+        }
+
+        private static BaseAnt InstantiateAnt(int antType)
+        {
+            switch (antType) {
+                case (int)AntTypes.WORKER: return new WorkerAnt();
+                case (int)AntTypes.LEAF_CUTTER: return new LeafCutterAnt();
+                case (int)AntTypes.BROOD: return new BroodAnt();
+            }
+            return null;
+        }
+
         public static void AllocateAnts()
         {
             throw new NotImplementedException();
@@ -79,7 +106,32 @@ namespace Ant_Colony.Controllers
         
         public static void GrowLarvae()
         {
-            throw new NotImplementedException();
+            while (Larvae > 0)
+            {
+                Menu.Print("It is time to for the larvae to grow into ants.\nPlease choose what type and amount of ant they should grow into.");
+                int[] promptResults = Menu.SelectAntTypeAndAmount(Larvae);
+                int antType = promptResults[0];
+                int antAmount = promptResults[1];
+
+                switch (antType) 
+                {
+                    case (int)AntTypes.WORKER:
+                        VirtWorkerAntAmount += antAmount;
+                        Larvae-= antAmount;
+                        break;
+
+                    case (int)AntTypes.LEAF_CUTTER:
+                        VirtLeafCutterAntAmount += antAmount;
+                        Larvae-= antAmount;
+                        break;
+
+                    case (int)AntTypes.BROOD:
+                        VirtBroodAntAmount += antAmount;
+                        Larvae-= antAmount;
+                        break;
+                    default: break;
+                }
+            }
         }
 
     }

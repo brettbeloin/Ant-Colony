@@ -4,8 +4,9 @@ using System.Text;
 
 namespace Ant_Colony.Models
 {
-    internal class WorkerAnt : BaseAnt
+    public class WorkerAnt : BaseAnt
     {
         public static new int FarmAmount { get; } = 2;
+        public static new int BaseDefence { get; } = 3;
     }
 }
