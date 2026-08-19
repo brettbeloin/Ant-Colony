@@ -1,6 +1,7 @@
 ﻿using Ant_Colony.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Text;
 
 namespace Ant_Colony.Controllers
@@ -8,23 +9,47 @@ namespace Ant_Colony.Controllers
     public class DungeonManager
     {
         List<BaseAnt> ants;
+        List<Enemies> enemies;
         int expForLevelUp = 0;
         int totalExp = 0;
         //DO NOT MAKE STATIC
         public void RunDungeon()
         {
-            throw new NotImplementedException();
+            SetupDungeon();
+            bool enemiesToFight = enemies.Count != 0;
+            do
+            {
+                // Handle CombatManager things here
+
+                enemiesToFight = enemies.Count != 0;
+            } while (enemiesToFight);
         }
 
         public void SetupDungeon()
         {
-            throw new NotImplementedException();
+            int eventNum = EventManager.DungeonEventGetter();
+
+            switch(eventNum){
+                case 0:
+                    EnemySetup(eventNum);
+                    break;
+                case 1:
+                    break;
+                default:
+                    break;
+            }
         }
 
 
-        public List<Enemies> EnemySetup()
+        public void EnemySetup(int eventNum)
         {
-            throw new NotImplementedException();
+            switch (eventNum)
+            {
+                case 0: 
+                    enemies.Add(new Beetle(new Stats() { atk=5, def=5, spd=5}, "Beetle", 1, 20, 500, false));
+                    enemies.Add(new Beetle(new Stats() { atk = 3, def = 3, spd = 3 }, "Beetle", 1, 20, 500, false));
+                    break;
+            }
         }
 
         public void SetXpForLevelUp()
@@ -39,7 +64,7 @@ namespace Ant_Colony.Controllers
             }
         }
 
-        public void IncreaseXp(Enemies enemy)
+        public void IncreaseExp(Enemies enemy)
         {
             totalExp += enemy.Exp;
         }
