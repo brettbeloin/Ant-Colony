@@ -45,7 +45,7 @@ namespace Ant_Colony.Controllers
         /// <returns>Returns the amount of food eaten, if the amount attempted to eat is more than the food avaliable, all the food will be eaten</returns>
         public static int EatFood(int amount)
         { 
-            int foodConsumed = Math.Min(Food - amount, Food);
+            int foodConsumed = Math.Min(amount, Food);
             Food -= foodConsumed;
             return foodConsumed;
         }

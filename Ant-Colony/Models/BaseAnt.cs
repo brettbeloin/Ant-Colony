@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net.Security;
 using System.Text;
 
 namespace Ant_Colony.Models
@@ -18,17 +17,17 @@ namespace Ant_Colony.Models
             Level += levels;
         }
 
-        public static int BaseDamage { get; } = 1;
-        public static int BaseDefence { get; } = 1;
+        public virtual int BaseDamage { get; } = 1;
+        public virtual int BaseDefence { get; } = 1;
 
         public int GetAttackDamage()
         {
-            return BaseDamage * Level;
+            return this.BaseDamage * Level;
         }
 
         public int GetDefenceAmount()
         {
-            return BaseDefence * Level;
+            return this.BaseDefence * Level;
         }
     }
 }

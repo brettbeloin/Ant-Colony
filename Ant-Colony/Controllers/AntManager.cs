@@ -75,14 +75,41 @@ namespace Ant_Colony.Controllers
             }
         }
 
-        private static BaseAnt InstantiateAnt(int antType)
+        public static int CountAnts(bool totalAnts = false)
+        {
+            int count = 0;
+            count += VirtWorkerAntAmount;
+            count += VirtLeafCutterAntAmount;
+            count += VirtBroodAntAmount;
+
+            if (totalAnts) return count;
+
+            count -= UsedVirtWorkerAnt;
+            count -= UsedVirtLeafCutterAnt;
+            count -= UsedVirtBroodAnt;
+
+            return count;
+        }
+
+        public static BaseAnt InstantiateAnt(int antType)
         {
             switch (antType) {
                 case (int)AntTypes.WORKER: return new WorkerAnt();
                 case (int)AntTypes.LEAF_CUTTER: return new LeafCutterAnt();
                 case (int)AntTypes.BROOD: return new BroodAnt();
+                default: return new BaseAnt();
             }
-            return null;
+        }
+
+        public static Type GetAntTypeFromInt(int antType)
+        {
+            switch (antType)
+            {
+                case (int)AntTypes.WORKER: return typeof(WorkerAnt);
+                case (int)AntTypes.LEAF_CUTTER: return typeof(LeafCutterAnt);
+                case (int)AntTypes.BROOD:return typeof(BroodAnt);
+                default: return typeof(BaseAnt);
+            }
         }
 
         public static void AllocateAnts()
@@ -100,6 +127,7 @@ namespace Ant_Colony.Controllers
         public static void TendLarvae(int AmountOfAnts, int LarvaePerAnt = 1)
         {
             int foodSpent = ResourceManager.EatFood(AmountOfAnts);
+            ResourceManager.EatFood(foodSpent);
             Larvae += foodSpent * LarvaePerAnt;
         }
 

@@ -7,6 +7,6 @@ namespace Ant_Colony.Models
     public class WorkerAnt : BaseAnt
     {
         public static new int FarmAmount { get; } = 2;
-        public static new int BaseDefence { get; } = 3;
+        public override int BaseDefence { get; } = 3;
     }
 }
