@@ -101,7 +101,7 @@ namespace Ant_Colony.Controllers
             }
         }
 
-        public static Type GetAntTypeFromInt(int antType)
+        public static Type GetAntTypeFromInt(int antType = -1)
         {
             switch (antType)
             {

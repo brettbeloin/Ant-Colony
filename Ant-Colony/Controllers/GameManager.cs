@@ -2,6 +2,7 @@
 using Ant_Colony.View;
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Text;
 
 namespace Ant_Colony.Controllers
@@ -10,10 +11,12 @@ namespace Ant_Colony.Controllers
     {
         public static void Run()
         {
+            Console.WriteLine(BaseAnt.GatherAmount);
+            //Console.WriteLine( ( ));
+            Console.WriteLine(AntManager.GetAntTypeFromInt().GetProperty("GatherAmount").GetValue(null));
             Menu.Print("Welcome To");
             do
             {
-                Console.Clear();
                 Menu.PrintLogo();
                 DisplayStats();
                 int response = Menu.MainMenu();
@@ -65,7 +68,11 @@ namespace Ant_Colony.Controllers
             int antTypeInt = allocation[0];
 
             int effeciency = 1;
-            //BaseAnt antType = AntManager.GetAntTypeFromInt(antTypeInt);
+            //Type antType = AntManager.GetAntTypeFromInt(antTypeInt);
+            effeciency = (int)AntManager.GetAntTypeFromInt(antTypeInt).GetProperty("GatherAmount").GetValue(null);
+            //typeof(BaseAnt).GetMember("GatherAmount");
+            //Type.GetType(typeof(BaseAnt)).GetDamageAttack();
+            //BaseAnt antType = 
             //effeciency = ((BaseAnt)antType).GatherAmount();
             
             ResourceManager.GatherLeaves(antCount, effeciency);
