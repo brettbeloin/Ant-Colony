@@ -11,9 +11,6 @@ namespace Ant_Colony.Controllers
     {
         public static void Run()
         {
-            Console.WriteLine(BaseAnt.GatherAmount);
-            //Console.WriteLine( ( ));
-            Console.WriteLine(AntManager.GetAntTypeFromInt().GetProperty("GatherAmount").GetValue(null));
             Menu.Print("Welcome To");
             do
             {
@@ -61,37 +58,41 @@ namespace Ant_Colony.Controllers
             }
         }
 
+        public static void SetMenuScreen()
+        {
+            Menu.ClearScreen();
+            Menu.PrintLogo();
+            DisplayStats();
+        }
+
         public static void GatherLeaves()
         {
-            int[] allocation = Menu.SelectAntTypeAndAmount(AntManager.CountAnts());
+            SetMenuScreen();
+            int[] allocation = AntManager.AllocateAnts();
             int antCount = allocation[1];
             int antTypeInt = allocation[0];
 
             int effeciency = 1;
-            //Type antType = AntManager.GetAntTypeFromInt(antTypeInt);
-            effeciency = (int)AntManager.GetAntTypeFromInt(antTypeInt).GetProperty("GatherAmount").GetValue(null);
-            //typeof(BaseAnt).GetMember("GatherAmount");
-            //Type.GetType(typeof(BaseAnt)).GetDamageAttack();
-            //BaseAnt antType = 
-            //effeciency = ((BaseAnt)antType).GatherAmount();
+            effeciency = AntManager.InstantiateAnt(antTypeInt).GATHER_AMOUNT;
             
             ResourceManager.GatherLeaves(antCount, effeciency);
         } 
 
         public static void TendFarm()
         {
-
-            int[] allocation = Menu.SelectAntTypeAndAmount(AntManager.CountAnts());
+            SetMenuScreen();
+            int[] allocation = AntManager.AllocateAnts();
             int antCount = allocation[1];
             int antTypeInt = allocation[0];
 
             int effeciency = 1;
             ResourceManager.GatherFood(antCount, effeciency);
         }
-
+ 
         public static void FeedLarvae()
-        { 
-            int[] allocation = Menu.SelectAntTypeAndAmount(AntManager.CountAnts());
+        {
+            SetMenuScreen();
+            int[] allocation = AntManager.AllocateAnts();
             int antCount = allocation[1];
             int antTypeInt = allocation[0];
 
