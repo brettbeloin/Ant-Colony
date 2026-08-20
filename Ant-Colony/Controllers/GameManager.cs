@@ -2,6 +2,7 @@
 using Ant_Colony.View;
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Text;
 
 namespace Ant_Colony.Controllers
@@ -13,7 +14,6 @@ namespace Ant_Colony.Controllers
             Menu.Print("Welcome To");
             do
             {
-                Console.Clear();
                 Menu.PrintLogo();
                 DisplayStats();
                 int response = Menu.MainMenu();
@@ -58,33 +58,41 @@ namespace Ant_Colony.Controllers
             }
         }
 
+        public static void SetMenuScreen()
+        {
+            Menu.ClearScreen();
+            Menu.PrintLogo();
+            DisplayStats();
+        }
+
         public static void GatherLeaves()
         {
-            int[] allocation = Menu.SelectAntTypeAndAmount(AntManager.CountAnts());
+            SetMenuScreen();
+            int[] allocation = AntManager.AllocateAnts();
             int antCount = allocation[1];
             int antTypeInt = allocation[0];
 
             int effeciency = 1;
-            //BaseAnt antType = AntManager.GetAntTypeFromInt(antTypeInt);
-            //effeciency = ((BaseAnt)antType).GatherAmount();
+            effeciency = AntManager.InstantiateAnt(antTypeInt).GATHER_AMOUNT;
             
             ResourceManager.GatherLeaves(antCount, effeciency);
         } 
 
         public static void TendFarm()
         {
-
-            int[] allocation = Menu.SelectAntTypeAndAmount(AntManager.CountAnts());
+            SetMenuScreen();
+            int[] allocation = AntManager.AllocateAnts();
             int antCount = allocation[1];
             int antTypeInt = allocation[0];
 
             int effeciency = 1;
             ResourceManager.GatherFood(antCount, effeciency);
         }
-
+ 
         public static void FeedLarvae()
-        { 
-            int[] allocation = Menu.SelectAntTypeAndAmount(AntManager.CountAnts());
+        {
+            SetMenuScreen();
+            int[] allocation = AntManager.AllocateAnts();
             int antCount = allocation[1];
             int antTypeInt = allocation[0];
 

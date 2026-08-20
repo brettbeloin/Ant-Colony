@@ -6,9 +6,9 @@ namespace Ant_Colony.Models
 {
     public class BaseAnt
     {
-        public static int GatherAmount { get; } = 1;
-        public static int FarmAmount { get; } = 1;
-        public static int LarveAmount { get; } = 1;
+        public readonly int GATHER_AMOUNT = 1; 
+        public readonly int FARM_AMOUNT = 1;
+        public readonly int LARVAE_AMOUNT = 1;
 
         public int Level { get; private set { field = Math.Max(0, value); } } = 1;
 
@@ -17,17 +17,17 @@ namespace Ant_Colony.Models
             Level += levels;
         }
 
-        public virtual int BaseDamage { get; } = 1;
-        public virtual int BaseDefence { get; } = 1;
+        public readonly int BASE_DAMAGE = 1;
+        public readonly int BASE_DEFENCE = 1;
 
         public int GetAttackDamage()
         {
-            return this.BaseDamage * Level;
+            return this.BASE_DAMAGE * Level;
         }
 
         public int GetDefenceAmount()
         {
-            return this.BaseDefence * Level;
+            return this.BASE_DEFENCE * Level;
         }
     }
 }

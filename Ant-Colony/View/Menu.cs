@@ -8,6 +8,13 @@ namespace Ant_Colony.View
 {
     internal static class Menu
     {
+
+
+        public static void ClearScreen()
+        {
+            Console.Clear();
+        }
+
         /// <summary>
         /// Use this to print messages outside of full menu functions
         /// </summary>
@@ -97,7 +104,13 @@ namespace Ant_Colony.View
                 }
             }
             return CIO.PromptForMenuSelection(options, false);
-        } 
+        }
+        
+        public static bool VerifyAction(string prompt = "Are you sure?")
+        {
+            return CIO.PromptForBool(prompt, "yes", "no");
+        }
+
 
         /// <summary>
         /// Prompts the player for an ant type and the amount of ants 
@@ -108,8 +121,17 @@ namespace Ant_Colony.View
         {
             int antType = SelectAntType("Please select an ant type to allocate");
 
-            int amount = CIO.PromptForInt($"Type the amount of ants: (0 - {max})\n", 0, max);
+            int amount = SelectAmount(max);
             return [antType, amount];
+        }
+
+        public static int SelectAmount(int max)
+        {
+            if (max == 0)
+            {
+                throw new ArgumentException("Max cannot be 0");
+            }
+            return CIO.PromptForInt($"Type the amount of ants: (0 - {max})\n", 0, max);
         }
 
         public static int SelectCombatOptions()
@@ -139,11 +161,11 @@ namespace Ant_Colony.View
         /// </summary>
         /// <param name="prompt">Changes the default prompt</param>
         /// <returns>returns an int for the type of ant, ranging from 0-2</returns>
-        public static int SelectAntType(string prompt = "Please Select an ant type")
+        public static int SelectAntType(string prompt = "Please Select an ant type", bool AllowQuit = false)
         {
             Print(prompt, true, ConsoleColor.Blue);
             string[] antTypes = { "Worker Ant", "Leaf Cutter Ant", "Brood Ant" };
-            return CIO.PromptForMenuSelection(antTypes, false);
+            return CIO.PromptForMenuSelection(antTypes, AllowQuit);
         }
         
     } 
