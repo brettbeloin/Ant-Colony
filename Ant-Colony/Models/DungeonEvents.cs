@@ -6,7 +6,15 @@ namespace Ant_Colony.Models
 {
     public enum DungeonEvents
     {
-        BATTLE,
-        TREASURE,
+        BattleBeetleEasy,
+        BattleBeetleMedium,
+        BattleBeelteHard,
+        BattleSpiderEasy,
+        BattleSpiderMedium,
+        BattleSpiderHard,
+        BattleMultipleEasy,
+        BattleMultipleMedium,
+        BattleMultipleHard,
+        Treasure,
     }
 }
