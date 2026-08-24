@@ -11,6 +11,8 @@ namespace Ant_Colony.Controllers
 
         public static int DungeonEventGetter()
         {
+            //Dictionary<DungeonEvents, int> dungeonEvents = new Dictionary<DungeonEvents, int>();
+
             Array dunEvents = Enum.GetValues(typeof(DungeonEvents));
             return rnd.Next(dunEvents.Length);
         }

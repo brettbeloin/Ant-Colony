@@ -1,3 +1,5 @@
+using Ant_Colony.Models;
+
 namespace Ant_Colony.Controllers;
 
 public static class CombatManager
@@ -7,6 +9,24 @@ public static class CombatManager
     static CombatManager()
     {
         throw new NotImplementedException();
+    }
+
+    
+
+    public static void AttackEnemy(int playerDamage, Enemies enemy)
+    {
+        enemy.Health -= playerDamage;
+    }
+
+    public static int AttackPlayer(int playerDefence, int enemyDamage)
+    {
+        if(playerDefence - enemyDamage < 0)
+        {
+            return enemyDamage - playerDefence;
+        } else
+        {
+            return 0;
+        }
     }
 
     public static int DetermineXp()
