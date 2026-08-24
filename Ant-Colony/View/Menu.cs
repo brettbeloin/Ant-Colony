@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Ant_Colony.Controllers;
+using Ant_Colony.Models;
 using CSC160_ConsoleMenu;
 
 namespace Ant_Colony.View
@@ -151,9 +152,41 @@ namespace Ant_Colony.View
             throw new NotImplementedException();
         }
  
-        public static void PrintCombatScreen()
+        public static void PrintCombatScreen(List<BaseAnt> ants, List<Enemies> enemies)
         {
             throw new NotImplementedException();
+        }
+
+        public static List<BaseAnt> SelectAttackingAnts(List<BaseAnt> ants)
+        {
+
+            if (ants.Count() <= 0 || ants == null) { return null; }
+            List<BaseAnt> selectedAnts = new List<BaseAnt>();
+
+            do
+            { 
+                ClearScreen();
+                Print("Select which ants you would like to attack", true, ConsoleColor.Blue);
+                for (int i = 0; i < ants.Count(); i++)
+                { 
+                    Print($"{i + 1}: {ants[i]}", false);
+                    if (selectedAnts.Contains(ants[i]))
+                    {
+                        Print(" - Selected", false, ConsoleColor.Green);
+                    } 
+                    Print("");
+                }
+                Print("\n0: End Selection");
+
+                int response = CIO.PromptForInt($"(0-{ants.Count() + 1}",0, ants.Count()+1);
+                if (response == 0)
+                {
+                    break;
+                }
+                selectedAnts.Add(ants[response - 1]);
+            } while (true);
+
+            return selectedAnts;
         }
         
         /// <summary>
