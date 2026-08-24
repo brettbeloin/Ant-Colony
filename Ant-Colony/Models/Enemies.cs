@@ -8,7 +8,6 @@ namespace Ant_Colony.Models
     {
         public  int atk { get; set; }
         public int def  { get; set; }
-        public int spd { get; set; }
     }
     
     public abstract class Enemies
@@ -24,7 +23,7 @@ namespace Ant_Colony.Models
 
         public Enemies()
         {
-            Stats = new Stats {atk =5, def = 5, spd = 5};
+            Stats = new Stats {atk =5, def = 5};
             Name = "Stinky";
             Lvl = 1;
             Health = 10;
