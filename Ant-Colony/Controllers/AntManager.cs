@@ -91,6 +91,17 @@ namespace Ant_Colony.Controllers
             return count;
         }
 
+
+        public static void PopRandomAnt(int amountOfAnts = 1)
+        {
+            Random rng = new Random();
+            for(int i = 0; i < amountOfAnts; i++)
+            {
+                int randIndex = rng.Next(amountOfAnts);
+                AntSwarm.RemoveAt(randIndex); 
+            }
+        } 
+
         public static BaseAnt InstantiateAnt(int antType)
         {
             switch (antType) {

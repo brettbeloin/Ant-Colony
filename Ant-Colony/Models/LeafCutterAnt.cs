@@ -9,5 +9,10 @@ namespace Ant_Colony.Models
         public readonly new int GATHER_AMOUNT = 2;
 
         public readonly new int BASE_DAMAGE = 3;
+
+        public override string ToString()
+        {
+            return "Leaf Cutter " + base.ToString();
+        }
     }
 }

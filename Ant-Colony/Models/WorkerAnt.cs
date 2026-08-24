@@ -8,5 +8,10 @@ namespace Ant_Colony.Models
     {
         public readonly new int FARM_AMOUNT = 1;
         public  readonly new int BASE_DEFENCE = 3;
+
+        public override string ToString()
+        {
+            return "Worker " + base.ToString();
+        }
     }
 }

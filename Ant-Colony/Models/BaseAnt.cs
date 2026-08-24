@@ -29,5 +29,10 @@ namespace Ant_Colony.Models
         {
             return this.BASE_DEFENCE * Level;
         }
+
+        public override string ToString()
+        {
+            return $"Ant (Level-{Level})"; 
+        }
     }
 }
