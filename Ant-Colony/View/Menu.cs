@@ -136,20 +136,20 @@ namespace Ant_Colony.View
             return CIO.PromptForInt($"Type the amount of ants: (0 - {max})\n", 0, max);
         }
 
-        public static int SelectCombatOptions()
+        public static int SelectCombatOptions() 
+        { 
+            string[] options = { "Fight", "Use Item", "Leave" };
+            Print("Please select the options for this combat", true, ConsoleColor.Blue);
+            return CIO.PromptForInt("(0-3)", 0, 3);
+        }
+
+        public static void PrintItems(List<BaseItem> itemList)
         {
             throw new NotImplementedException();
         }
 
-        public static void PrintItems(List<String> itemList)
+        public static int SelectItem(List<BaseItem> itemList)
         {
-            //TODO: replace the string with items once the class is implemented
-            throw new NotImplementedException();
-        }
-
-        public static int SelectItem(List<String> itemList)
-        {
-            //TODO: make the inputed list of items of the item class when that is implemented
             throw new NotImplementedException();
         }
  
@@ -203,6 +203,7 @@ namespace Ant_Colony.View
                 return null;
             return enemies[response - 1]; 
         }
+
         
         /// <summary>
         /// Prompts the player for an ant type
