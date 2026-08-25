@@ -34,5 +34,16 @@ namespace Ant_Colony.Models
         {
             return $"Ant (Level-{Level})"; 
         }
+
+        public static bool operator ==(BaseAnt ant1,  BaseAnt ant2)
+        {
+            return ant1.GetHashCode() == ant2.GetHashCode();
+        }
+        
+        public static bool operator !=(BaseAnt ant1,  BaseAnt ant2)
+        {
+            return ant1.GetHashCode() != ant2.GetHashCode();
+        }
+
     }
 }
