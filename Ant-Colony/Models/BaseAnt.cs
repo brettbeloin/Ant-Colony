@@ -6,11 +6,15 @@ namespace Ant_Colony.Models
 {
     public class BaseAnt
     {
+        private static int nextID = 0;
+
         public readonly int GATHER_AMOUNT = 1; 
         public readonly int FARM_AMOUNT = 1;
         public readonly int LARVAE_AMOUNT = 1;
 
         public int Level { get; private set { field = Math.Max(0, value); } } = 1;
+
+        public int AntID { get; } = nextID++;
 
         public void LevelUp(int levels = 1)
         {
@@ -37,12 +41,12 @@ namespace Ant_Colony.Models
 
         public static bool operator ==(BaseAnt ant1,  BaseAnt ant2)
         {
-            return ant1.GetHashCode() == ant2.GetHashCode();
+            return ant1.AntID == ant2.AntID;
         }
         
         public static bool operator !=(BaseAnt ant1,  BaseAnt ant2)
         {
-            return ant1.GetHashCode() != ant2.GetHashCode();
+            return ant1.AntID != ant2.AntID;
         }
 
     }
