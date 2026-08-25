@@ -60,6 +60,17 @@ namespace Ant_Colony.Controllers
             } 
         } = 0;
 
+ 
+        public static int GlobalWorkBonus
+        {
+            get {
+                int currentBonus = field;
+                field = Math.Max(0, field - 1);
+                return currentBonus; 
+            }
+            set { field = Math.Max(0, value); }
+        } = 0;
+
         public static List<BaseAnt> AntSwarm { get; private set; } = new List<BaseAnt>();
 
         public static void CreateAntSwarm()
@@ -196,7 +207,7 @@ namespace Ant_Colony.Controllers
         {
             int foodSpent = ResourceManager.EatFood(AmountOfAnts);
             ResourceManager.EatFood(foodSpent);
-            Larvae += foodSpent * LarvaePerAnt;
+            Larvae += foodSpent * LarvaePerAnt + GlobalWorkBonus;
         }
 
         

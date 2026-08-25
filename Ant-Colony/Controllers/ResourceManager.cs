@@ -21,7 +21,7 @@ namespace Ant_Colony.Controllers
         /// <param name="AmountPerAnt">The effeciency of the ants getting leaves</param>
         public static void GatherLeaves(int AmountOfAnts, int AmountPerAnt = 1)
         {
-            Leaves += (AmountOfAnts * AmountPerAnt);
+            Leaves += (AmountOfAnts * AmountPerAnt) + AntManager.GlobalWorkBonus;
         }
  
         /// <summary>
@@ -35,7 +35,7 @@ namespace Ant_Colony.Controllers
         {
             int leavesConsumed = Math.Min(AmountOfAnts, Leaves);
             Leaves -= leavesConsumed;
-            Food += (leavesConsumed * AmountPerLeaf);
+            Food += (leavesConsumed * AmountPerLeaf) + AntManager.GlobalWorkBonus;
         }
 
         /// <summary>
