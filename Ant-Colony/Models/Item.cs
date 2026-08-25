@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Ant_Colony.Models
 {
-    public class Item
+    public class BaseItem
     {
         public int Uses { get;
             set
