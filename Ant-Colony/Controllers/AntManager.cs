@@ -54,7 +54,7 @@ namespace Ant_Colony.Controllers
         } = 0;
 
         public static int Larvae {  get; 
-            private set 
+            set 
             {
                 field = Math.Max(0, value); 
             } 
@@ -194,6 +194,12 @@ namespace Ant_Colony.Controllers
             UsedVirtBroodAnt += broodsAllocated;
 
             return [antType, allocation];
+        }
+        public static void DeallocateAnts()
+        {
+            UsedVirtBroodAnt = 0;
+            UsedVirtLeafCutterAnt = 0;
+            UsedVirtWorkerAnt = 0; 
         }
 
         /// <summary>

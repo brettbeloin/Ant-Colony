@@ -9,6 +9,8 @@ namespace Ant_Colony.Controllers
 {
     public static class GameManager
     {
+
+        private static int daysUntilFinalBoss = 7;
         public static void Run()
         {
             Menu.Print("Welcome To");
@@ -17,9 +19,21 @@ namespace Ant_Colony.Controllers
                 Menu.PrintLogo();
                 DisplayStats();
                 int response = Menu.MainMenu();
-                HandleMainMenuResponse(response); 
+                HandleMainMenuResponse(response);
+                if (AntManager.CountAnts() == 0)
+                {
+                    EndDay();
+                }
             } while (true);
         }
+        
+        public static void EndDay()
+        {
+            daysUntilFinalBoss--;
+            AntManager.GrowLarvae();
+            AntManager.DeallocateAnts();
+        }
+
         public static void DisplayStats()
         {
             string[] stats =
@@ -28,12 +42,9 @@ namespace Ant_Colony.Controllers
                 $"\tLeaves : {ResourceManager.Leaves}",
                 $"\tFood : {ResourceManager.Food}",
                 "Ants :",
-                $"\tTotal Worker Ants : {AntManager.VirtWorkerAntAmount}",
-                $"\tUsed Worker Ants : {AntManager.UsedVirtWorkerAnt}",
-                $"\tTotal Leaf Cutter Ants : {AntManager.VirtLeafCutterAntAmount}",
-                $"\tUsed Leaf Cutter Ants : {AntManager.UsedVirtLeafCutterAnt}",
-                $"\tTotal Brood Ants : {AntManager.VirtBroodAntAmount}",
-                $"\tUsed Broot Ants : {AntManager.UsedVirtBroodAnt}",
+                $"\tWorker Ants Used: {AntManager.UsedVirtWorkerAnt}/{AntManager.VirtWorkerAntAmount}",
+                $"\tLeaf Cutter Ants Used: {AntManager.UsedVirtLeafCutterAnt}/{AntManager.VirtLeafCutterAntAmount}",
+                $"\tBrood Ants Used: {AntManager.UsedVirtBroodAnt}/{AntManager.VirtBroodAntAmount}",
                 $"\tLarvae : {AntManager.Larvae}",
             ];
             Menu.PrintStats(stats);
@@ -56,6 +67,11 @@ namespace Ant_Colony.Controllers
                     break;
                 default: return;
             }
+        }
+
+        public static void RunFinalBoss()
+        {
+
         }
 
         public static void SetMenuScreen()

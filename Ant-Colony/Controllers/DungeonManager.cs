@@ -38,7 +38,7 @@ namespace Ant_Colony.Controllers
             int attackTotal = 0;
             foreach(BaseAnt ant in attackAnts)
             {
-                attackTotal += ant.BaseDamage;
+                attackTotal += ant.BASE_DAMAGE;
             }
             return attackTotal;
         }
