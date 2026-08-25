@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net.Security;
 using System.Text;
 
 namespace Ant_Colony.Models
 {
     public class BaseAnt
     {
-        public static int GatherAmount { get; } = 1;
-        public static int FarmAmount { get; } = 1;
-        public static int LarveAmount { get; } = 1;
+        public readonly int GATHER_AMOUNT = 1; 
+        public readonly int FARM_AMOUNT = 1;
+        public readonly int LARVAE_AMOUNT = 1;
 
         public int Level { get; private set { field = Math.Max(0, value); } } = 1;
 
@@ -18,17 +17,22 @@ namespace Ant_Colony.Models
             Level += levels;
         }
 
-        public static int BaseDamage { get; } = 1;
-        public static int BaseDefence { get; } = 1;
+        public readonly int BASE_DAMAGE = 1;
+        public readonly int BASE_DEFENCE = 1;
 
         public int GetAttackDamage()
         {
-            return BaseDamage * Level;
+            return this.BASE_DAMAGE * Level;
         }
 
         public int GetDefenceAmount()
         {
-            return BaseDefence * Level;
+            return this.BASE_DEFENCE * Level;
+        }
+
+        public override string ToString()
+        {
+            return $"Ant (Level-{Level})"; 
         }
     }
 }

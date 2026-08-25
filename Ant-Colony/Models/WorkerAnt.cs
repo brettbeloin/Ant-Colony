@@ -6,7 +6,12 @@ namespace Ant_Colony.Models
 {
     public class WorkerAnt : BaseAnt
     {
-        public static new int FarmAmount { get; } = 2;
-        public static new int BaseDefence { get; } = 3;
+        public readonly new int FARM_AMOUNT = 1;
+        public  readonly new int BASE_DEFENCE = 3;
+
+        public override string ToString()
+        {
+            return "Worker " + base.ToString();
+        }
     }
 }

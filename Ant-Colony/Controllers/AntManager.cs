@@ -75,19 +75,114 @@ namespace Ant_Colony.Controllers
             }
         }
 
-        private static BaseAnt InstantiateAnt(int antType)
+        public static int CountAnts(bool totalAnts = false)
+        {
+            int count = 0;
+            count += VirtWorkerAntAmount;
+            count += VirtLeafCutterAntAmount;
+            count += VirtBroodAntAmount;
+
+            if (totalAnts) return count;
+
+            count -= UsedVirtWorkerAnt;
+            count -= UsedVirtLeafCutterAnt;
+            count -= UsedVirtBroodAnt;
+
+            return count;
+        }
+
+
+        public static void PopRandomAnt(int amountOfAnts = 1)
+        {
+            Random rng = new Random();
+            for(int i = 0; i < amountOfAnts; i++)
+            {
+                int randIndex = rng.Next(amountOfAnts);
+                AntSwarm.RemoveAt(randIndex); 
+            }
+        } 
+
+        public static BaseAnt InstantiateAnt(int antType)
         {
             switch (antType) {
                 case (int)AntTypes.WORKER: return new WorkerAnt();
                 case (int)AntTypes.LEAF_CUTTER: return new LeafCutterAnt();
                 case (int)AntTypes.BROOD: return new BroodAnt();
+                default: return new BaseAnt();
             }
-            return null;
         }
 
-        public static void AllocateAnts()
+        public static Type GetAntTypeFromInt(int antType = -1)
         {
-            throw new NotImplementedException();
+            switch (antType)
+            {
+                case (int)AntTypes.WORKER: return typeof(WorkerAnt);
+                case (int)AntTypes.LEAF_CUTTER: return typeof(LeafCutterAnt);
+                case (int)AntTypes.BROOD:return typeof(BroodAnt);
+                default: return typeof(BaseAnt);
+            }
+        }
+
+        /// <summary>
+        /// Askes for an ant type and then only lets you allocate a valid amount of ants to it
+        /// </summary>
+        /// <returns>returns an array of length 2, where the first number is the ant type, and the second is,
+        /// if the use quits, it returns [0, 0]</returns>
+        public static int[] AllocateAnts()
+        {
+
+            bool reallocate = false;
+            int antType = 0;
+            int allocation = 0;
+
+            int leafCuttersAllocated = 0;
+            int broodsAllocated = 0;
+            int leafCuttersAllocates = 0;
+            do
+            {
+                reallocate = false;
+                antType = Menu.SelectAntType(AllowQuit:true)-1;
+                leafCuttersAllocated = 0;
+                broodsAllocated = 0;
+                leafCuttersAllocates = 0;
+                try
+                { 
+                    switch (antType)
+                    {
+                        case -1:
+                            return [0, 0];
+                        case (int)AntTypes.LEAF_CUTTER:
+                            allocation = Menu.SelectAmount(VirtLeafCutterAntAmount - UsedVirtLeafCutterAnt);
+                            leafCuttersAllocates = allocation;
+                            break;
+                        case (int)AntTypes.BROOD:
+                            allocation = Menu.SelectAmount(VirtBroodAntAmount - UsedVirtBroodAnt);
+                            broodsAllocated = allocation;
+                            break;
+                        default: 
+                            allocation = Menu.SelectAmount(VirtWorkerAntAmount - UsedVirtWorkerAnt);
+                            leafCuttersAllocated = allocation;
+                            break;
+                    }
+                    if (allocation <= 0)
+                    {
+                        reallocate = !Menu.VerifyAction("Are you sure you do not want to allocate any ants?");
+                    }
+                }
+                catch (ArgumentException ae)
+                {
+                    Menu.Print("You have used all of the ants of this type already, please pick a different kind", true, ConsoleColor.Red);
+                    reallocate = true;
+                    continue;
+                }
+
+
+            } while(reallocate);
+            UsedVirtWorkerAnt += leafCuttersAllocated;
+            UsedVirtLeafCutterAnt += leafCuttersAllocated;
+            UsedVirtBroodAnt += broodsAllocated;
+
+            return [antType, allocation];
         }
 
         /// <summary>
@@ -100,6 +195,7 @@ namespace Ant_Colony.Controllers
         public static void TendLarvae(int AmountOfAnts, int LarvaePerAnt = 1)
         {
             int foodSpent = ResourceManager.EatFood(AmountOfAnts);
+            ResourceManager.EatFood(foodSpent);
             Larvae += foodSpent * LarvaePerAnt;
         }
 
