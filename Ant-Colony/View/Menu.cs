@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using Ant_Colony.Controllers;
 using Ant_Colony.Models;
@@ -187,6 +188,20 @@ namespace Ant_Colony.View
             } while (true);
 
             return selectedAnts;
+        }
+
+        public static Enemies SelectEnemy(List<Enemies> enemies) 
+        {
+            Print("Please Select an enemy to attack", true, ConsoleColor.Blue);
+            for(int i = 0; i < enemies.Count(); i++)
+            {
+                Print($"{i + 1}: {enemies}"); 
+            }
+            Print($"0: Cancel Selection");
+            int response = CIO.PromptForInt($"(0-{enemies.Count()})", 0, enemies.Count()+1);
+            if (response == 0)
+                return null;
+            return enemies[response - 1]; 
         }
         
         /// <summary>
