@@ -54,10 +54,21 @@ namespace Ant_Colony.Controllers
         } = 0;
 
         public static int Larvae {  get; 
-            private set 
+            set 
             {
                 field = Math.Max(0, value); 
             } 
+        } = 0;
+
+ 
+        public static int GlobalWorkBonus
+        {
+            get {
+                int currentBonus = field;
+                field = Math.Max(0, field - 1);
+                return currentBonus; 
+            }
+            set { field = Math.Max(0, value); }
         } = 0;
 
         public static List<BaseAnt> AntSwarm { get; private set; } = new List<BaseAnt>();
@@ -184,6 +195,12 @@ namespace Ant_Colony.Controllers
 
             return [antType, allocation];
         }
+        public static void DeallocateAnts()
+        {
+            UsedVirtBroodAnt = 0;
+            UsedVirtLeafCutterAnt = 0;
+            UsedVirtWorkerAnt = 0; 
+        }
 
         /// <summary>
         /// Call this Function to increase the amount of larva you have,
@@ -196,7 +213,7 @@ namespace Ant_Colony.Controllers
         {
             int foodSpent = ResourceManager.EatFood(AmountOfAnts);
             ResourceManager.EatFood(foodSpent);
-            Larvae += foodSpent * LarvaePerAnt;
+            Larvae += foodSpent * LarvaePerAnt + GlobalWorkBonus;
         }
 
         

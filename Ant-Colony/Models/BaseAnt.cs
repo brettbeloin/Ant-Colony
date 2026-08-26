@@ -11,7 +11,6 @@ namespace Ant_Colony.Models
         public readonly int GATHER_AMOUNT = 1; 
         public readonly int FARM_AMOUNT = 1;
         public readonly int LARVAE_AMOUNT = 1;
-
         public int Level { get; private set { field = Math.Max(0, value); } } = 1;
 
         public int AntID { get; } = nextID++;
