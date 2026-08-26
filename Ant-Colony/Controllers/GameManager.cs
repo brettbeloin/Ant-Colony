@@ -22,6 +22,7 @@ namespace Ant_Colony.Controllers
                 HandleMainMenuResponse(response);
                 if (AntManager.CountAnts() == 0)
                 {
+                    SetMenuScreen();
                     EndDay();
                 }
             } while (true);
@@ -38,13 +39,14 @@ namespace Ant_Colony.Controllers
         {
             string[] stats =
             [
+                $"Days Remaining : {daysUntilFinalBoss}",
                 "Resources :",
                 $"\tLeaves : {ResourceManager.Leaves}",
                 $"\tFood : {ResourceManager.Food}",
                 "Ants :",
-                $"\tWorker Ants Used: {AntManager.UsedVirtWorkerAnt}/{AntManager.VirtWorkerAntAmount}",
-                $"\tLeaf Cutter Ants Used: {AntManager.UsedVirtLeafCutterAnt}/{AntManager.VirtLeafCutterAntAmount}",
-                $"\tBrood Ants Used: {AntManager.UsedVirtBroodAnt}/{AntManager.VirtBroodAntAmount}",
+                $"\tWorker Ants : {AntManager.VirtWorkerAntAmount-AntManager.UsedVirtWorkerAnt}/{AntManager.VirtWorkerAntAmount}",
+                $"\tLeaf Cutter Ants : {AntManager.VirtLeafCutterAntAmount-AntManager.UsedVirtLeafCutterAnt}/{AntManager.VirtLeafCutterAntAmount}",
+                $"\tBrood Ants : {AntManager.VirtBroodAntAmount-AntManager.UsedVirtBroodAnt}/{AntManager.VirtBroodAntAmount}",
                 $"\tLarvae : {AntManager.Larvae}",
             ];
             Menu.PrintStats(stats);
@@ -118,7 +120,7 @@ namespace Ant_Colony.Controllers
 
         public static void EnterDungeon()
         {
-            Menu.Print("Unfortunantly, this Has not been completed yet", true, ConsoleColor.Red); 
+            new DungeonManager().RunDungeon();
         }
     }
 }

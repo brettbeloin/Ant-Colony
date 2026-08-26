@@ -6,9 +6,11 @@ namespace Ant_Colony.Models
 {
     public class LeafCutterAnt : BaseAnt
     {
-        public readonly new int GATHER_AMOUNT = 2;
-
-        public readonly new int BASE_DAMAGE = 3;
+        public LeafCutterAnt()
+        {
+            GATHER_AMOUNT = 2;
+            BASE_DAMAGE = 3;
+        }
 
         public override string ToString()
         {

@@ -27,6 +27,20 @@ namespace AntColonyAutomatedTester
         }
 
         [Theory]
+        [InlineData(-1,1)]
+        [InlineData(0,1)] 
+        [InlineData(1,3)] 
+        [InlineData(2,2)]
+        public void AntDamageConstant_PolymorhpismWorks(int antType, int correctValue)
+        {
+            // arrange
+            BaseAnt ant = AntManager.InstantiateAnt(antType);
+
+            // Assert
+            Assert.Equal(correctValue, ant.BASE_DAMAGE); 
+        }
+
+        [Theory]
         [InlineData(-1, 0, 1)]
         [InlineData(0, 0, 1)]
         [InlineData(1, 0, 3)]
