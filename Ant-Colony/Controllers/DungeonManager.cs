@@ -28,27 +28,41 @@ namespace Ant_Colony.Controllers
                 switch (combatSelection)
                 {
                     case 1: 
+                        // Get Player Atk and Def Stats
                         List<BaseAnt> attackAnts = Menu.SelectAttackingAnts(ants);
                         int atkTotal = GetAttack(attackAnts);
                         int defTotal = GetDefence(attackAnts);
 
+                        // Attack Enemies
                         Enemies enemyBeingAttacked = Menu.SelectEnemy(enemies);
                         CombatManager.AttackEnemy(atkTotal, enemyBeingAttacked);
+                        Menu.Print($"{enemyBeingAttacked} took {atkTotal} damage!", true, ConsoleColor.Green);
 
+                        //Remove enemy if dead and level up
+                        int exp = CombatManager.PopDeadEnemies(enemies);
+                        if(exp > 0)
+                        {
+                            IncreaseExp(exp);
+                            CheckForLevelUp();
+                        }
+
+                        // Attack Player
                         int enemyAtk = GetEnemyAtkTotal(enemies);
                         int damageDelt = CombatManager.AttackPlayer(defTotal, enemyAtk);
-                        //Remove random ants depending on damageDelt
+
+                        // Remove random ants depending on damageDelt
+                        AntManager.PopRandomAnt(damageDelt);
+                        if(damageDelt != 0)
+                        {
+                            Menu.Print($"{damageDelt} ants were lost!", true, ConsoleColor.Red);
+                            playerHealth = ants.Count();
+                        }
 
                         break;
                 }
 
                 enemiesToFight = enemies.Count != 0;
             } while (enemiesToFight || playerHealth == 0);
-        }
-
-        public void KillAnts(int antToKill)
-        {
-            throw new NotImplementedException();
         }
 
         public int GetEnemyAtkTotal(List<Enemies> enemies)
@@ -186,9 +200,9 @@ namespace Ant_Colony.Controllers
             }
         }
 
-        public void IncreaseExp(Enemies enemy)
+        public void IncreaseExp(int exp)
         {
-            totalExp += enemy.Exp;
+            totalExp += exp;
         }
 
         public void CheckForLevelUp()
@@ -200,13 +214,19 @@ namespace Ant_Colony.Controllers
                 {
                     totalExp -= expForLevelUp;
                     SetXpForLevelUp();
-                    foreach (BaseAnt ant in ants)
-                    {
-                        ant.LevelUp();
-                    }
+                    LevelUpAnts();
+                    Menu.Print("Your ants have leveled up!", true, ConsoleColor.Green);
                 }
                 AnotherLevelUpNeeded = totalExp >= expForLevelUp;
             } while (AnotherLevelUpNeeded);
+        }
+
+        public void LevelUpAnts()
+        {
+            foreach (BaseAnt ant in ants)
+            {
+                ant.LevelUp();
+            }
         }
     }
 }
