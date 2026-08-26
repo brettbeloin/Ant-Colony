@@ -10,7 +10,7 @@ namespace Ant_Colony.Controllers
 {
     public class DungeonManager
     {
-        List<BaseAnt> ants;
+        List<BaseAnt> ants = AntManager.AntSwarm;
         List<Enemies> enemies;
         int expForLevelUp = 0;
         int totalExp = 0;
@@ -20,21 +20,64 @@ namespace Ant_Colony.Controllers
             SetupDungeon();
             bool enemiesToFight = enemies.Count != 0;
             int playerHealth = ants.Count();
+
             do
             {
                 // Handle CombatManager things here
-                int combatSelection = 0;
-                if(combatSelection == 1)
+                int combatSelection = Menu.SelectCombatOptions();
+                switch (combatSelection)
                 {
-                    List<BaseAnt> attackAnts = Menu.SelectAttackingAnts(ants);
-                }
+                    case 1: 
+                        List<BaseAnt> attackAnts = Menu.SelectAttackingAnts(ants);
+                        int atkTotal = GetAttack(attackAnts);
+                        int defTotal = GetDefence(attackAnts);
 
+                        Enemies enemyBeingAttacked = Menu.SelectEnemy(enemies);
+                        CombatManager.AttackEnemy(atkTotal, enemyBeingAttacked);
+
+                        int enemyAtk = GetEnemyAtkTotal(enemies);
+                        int damageDelt = CombatManager.AttackPlayer(defTotal, enemyAtk);
+                        //Remove random ants depending on damageDelt
+
+                        break;
+                }
 
                 enemiesToFight = enemies.Count != 0;
             } while (enemiesToFight || playerHealth == 0);
         }
 
-        public int getAttack(List<BaseAnt> attackAnts)
+        public void KillAnts(int antToKill)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int GetEnemyAtkTotal(List<Enemies> enemies)
+        {
+            int enemyAtk = 0;
+            foreach( Enemies enemy in enemies)
+            {
+                enemyAtk += enemy.Stats.atk;
+            }
+
+            return enemyAtk;
+        }
+
+        public int GetDefence(List<BaseAnt> attackAnts)
+        {
+            int defence = 0;
+
+            foreach (BaseAnt atkAnt in attackAnts)
+            {
+                foreach (BaseAnt ant in ants)
+                {
+                    defence += (atkAnt.AntID == ant.AntID) ? atkAnt.BASE_DEFENCE : 0;
+                }
+            }
+
+            return defence;
+        }
+
+        public int GetAttack(List<BaseAnt> attackAnts)
         {
             int attackTotal = 0;
             foreach(BaseAnt ant in attackAnts)
