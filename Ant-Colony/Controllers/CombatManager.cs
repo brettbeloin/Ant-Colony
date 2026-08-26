@@ -1,4 +1,5 @@
 using Ant_Colony.Models;
+using Ant_Colony.View;
 
 namespace Ant_Colony.Controllers;
 
@@ -10,8 +11,6 @@ public static class CombatManager
     {
         throw new NotImplementedException();
     }
-
-    
 
     public static void AttackEnemy(int playerDamage, Enemies enemy)
     {
@@ -28,6 +27,25 @@ public static class CombatManager
             return 0;
         }
     }
+
+    public static int PopDeadEnemies(List<Enemies> enemies)
+    {
+        int totalExp = 0;
+        foreach(Enemies enemy in enemies)
+        {
+            if (enemy.Health <= 0)
+            {
+                enemies.Remove(enemy);
+                int exp = DetermineXp();
+                Menu.Print($"{enemy} has been defeated!\nYou gained {exp} exp");
+                totalExp += exp;
+            }
+        }
+
+        return totalExp;
+    }
+
+
 
     public static int DetermineXp()
     {
