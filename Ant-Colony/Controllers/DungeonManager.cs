@@ -1,4 +1,5 @@
 ﻿using Ant_Colony.Models;
+using Ant_Colony.View;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
@@ -25,7 +26,7 @@ namespace Ant_Colony.Controllers
                 int combatSelection = 0;
                 if(combatSelection == 1)
                 {
-
+                    List<BaseAnt> attackAnts = Menu.SelectAttackingAnts(ants);
                 }
 
 
