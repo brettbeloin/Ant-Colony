@@ -121,7 +121,7 @@ namespace Ant_Colony.View
         /// <returns>returns an array of length 2 that holds an ant type as an int in the first slot, and the amount in the second</returns>
         public static int[] SelectAntTypeAndAmount(int max)
         {
-            int antType = SelectAntType("Please select an ant type to allocate");
+            int antType = SelectAntType("Please select an ant type to allocate")-1;
 
             int amount = SelectAmount(max);
             return [antType, amount];

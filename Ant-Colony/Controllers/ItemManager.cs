@@ -43,7 +43,7 @@ namespace Ant_Colony.Controllers
  
 
         public static bool TryAddItem(BaseItem itemName)
-        {
+        { 
             if (DungeonInventory.Count() < MaxCapacity)
             {
                 DungeonInventory.Add(itemName);

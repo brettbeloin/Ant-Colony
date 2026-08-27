@@ -7,9 +7,12 @@ namespace Ant_Colony.Models
 {
     public class BroodAnt : BaseAnt
     {
-        public readonly new int LARVAE_AMOUNT = 2;
-        public readonly new int BASE_DAMAGE  = 2;
-        public readonly new int BASE_DEFENCE = 2;
+        public BroodAnt()
+        {
+            LARVAE_AMOUNT = 2;
+            BASE_DEFENCE = 2;
+            BASE_DAMAGE = 2;
+        }
 
         public override string ToString()
         {
