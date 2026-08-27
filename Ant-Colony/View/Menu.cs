@@ -161,7 +161,7 @@ namespace Ant_Colony.View
         public static List<BaseAnt> SelectAttackingAnts(List<BaseAnt> ants)
         {
 
-            if (ants.Count() <= 0 || ants == null) { return null; }
+            if (ants.Count() <= 0) { return new List<BaseAnt>(); }
             List<BaseAnt> selectedAnts = new List<BaseAnt>();
 
             do
