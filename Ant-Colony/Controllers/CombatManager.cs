@@ -28,36 +28,27 @@ public static class CombatManager
         }
     }
 
-    public static int PopDeadEnemies(List<Enemies> enemies)
+    public static void PopDeadEnemies(List<Enemies> enemies)
     {
-        int totalExp = 0;
+        //int totalExp = 0;
         foreach(Enemies enemy in enemies)
         {
             if (enemy.Health <= 0)
             {
                 enemies.Remove(enemy);
-                int exp = DetermineXp();
-                Menu.Print($"{enemy} has been defeated!\nYou gained {exp} exp");
-                totalExp += exp;
+                //int exp = DetermineXp();
+                Menu.Print($"{enemy} has been defeated!");
+                //totalExp += exp;
             }
         }
 
-        return totalExp;
+        //return totalExp;
     }
 
 
 
     public static int DetermineXp()
     {
-        /*
-         float x = healthLostRatio (0 to 1)
-         int reward = 0;
-
-         if x <= 0.20f:
-             reward = base
-         else:
-             reward = 5 + (base - 5) * e^(-k * (x - 0.20))
-       */
-        throw new NotImplementedException();
+        return 500;
     }
 }

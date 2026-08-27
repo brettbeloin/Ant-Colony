@@ -17,6 +17,16 @@ namespace Ant_Colony.Controllers
         //DO NOT MAKE STATIC
         public void RunDungeon()
         {
+            bool playerIsAlive = true;
+            do
+            {
+                playerIsAlive = SimulateDungeon();
+            }while (playerIsAlive);
+
+        }
+
+        public bool SimulateDungeon()
+        {
             SetupDungeon();
             bool enemiesToFight = enemies.Count != 0;
             int playerHealth = ants.Count();
@@ -27,7 +37,7 @@ namespace Ant_Colony.Controllers
                 int combatSelection = Menu.SelectCombatOptions();
                 switch (combatSelection)
                 {
-                    case 1: 
+                    case 1:
                         // Get Player Atk and Def Stats
                         List<BaseAnt> attackAnts = Menu.SelectAttackingAnts(ants);
                         int atkTotal = GetAttack(attackAnts);
@@ -39,12 +49,12 @@ namespace Ant_Colony.Controllers
                         Menu.Print($"{enemyBeingAttacked} took {atkTotal} damage!", true, ConsoleColor.Green);
 
                         //Remove enemy if dead and level up
-                        int exp = CombatManager.PopDeadEnemies(enemies);
-                        if(exp > 0)
-                        {
-                            IncreaseExp(exp);
-                            CheckForLevelUp();
-                        }
+                        CombatManager.PopDeadEnemies(enemies);
+                        //if(exp > 0)
+                        //{
+                        //    IncreaseExp(exp);
+                        //    CheckForLevelUp();
+                        //}
 
                         // Attack Player
                         int enemyAtk = GetEnemyAtkTotal(enemies);
@@ -52,7 +62,7 @@ namespace Ant_Colony.Controllers
 
                         // Remove random ants depending on damageDelt
                         AntManager.PopRandomAnt(damageDelt);
-                        if(damageDelt != 0)
+                        if (damageDelt != 0)
                         {
                             Menu.Print($"{damageDelt} ants were lost!", true, ConsoleColor.Red);
                             playerHealth = ants.Count();
@@ -63,6 +73,20 @@ namespace Ant_Colony.Controllers
 
                 enemiesToFight = enemies.Count != 0;
             } while (enemiesToFight || playerHealth == 0);
+            if (!enemiesToFight)
+            {
+                int expEarned = CombatManager.DetermineXp();
+                Menu.Print($"You earned {expEarned} exp");
+                IncreaseExp(expEarned);
+                CheckForLevelUp();
+
+                return true;
+            }
+            else
+            {
+                Menu.Print($"All your ants have been squashed!", true, ConsoleColor.Red);
+                return false;
+            }
         }
 
         public int GetEnemyAtkTotal(List<Enemies> enemies)
