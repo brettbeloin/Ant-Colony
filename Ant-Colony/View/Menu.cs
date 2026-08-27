@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using Ant_Colony.Controllers;
@@ -140,7 +141,7 @@ namespace Ant_Colony.View
         { 
             string[] options = { "Fight", "Use Item", "Leave" };
             Print("Please select the options for this combat", true, ConsoleColor.Blue);
-            return CIO.PromptForInt("(0-3)", 0, 3);
+            return CIO.PromptForMenuSelection(options, false);
         }
 
         public static void PrintItems(List<BaseItem> itemList)
@@ -161,7 +162,7 @@ namespace Ant_Colony.View
         public static List<BaseAnt> SelectAttackingAnts(List<BaseAnt> ants)
         {
 
-            if (ants.Count() <= 0 || ants == null) { return null; }
+            if (ants.Count() <= 0) { return new List<BaseAnt>(); }
             List<BaseAnt> selectedAnts = new List<BaseAnt>();
 
             do
@@ -179,7 +180,7 @@ namespace Ant_Colony.View
                 }
                 Print("\n0: End Selection");
 
-                int response = CIO.PromptForInt($"(0-{ants.Count() + 1}",0, ants.Count()+1);
+                int response = CIO.PromptForInt($"(0-{ants.Count() + 1})\n",0, ants.Count()+1);
                 if (response == 0)
                 {
                     break;
@@ -215,6 +216,25 @@ namespace Ant_Colony.View
             Print(prompt, true, ConsoleColor.Blue);
             string[] antTypes = { "Worker Ant", "Leaf Cutter Ant", "Brood Ant" };
             return CIO.PromptForMenuSelection(antTypes, AllowQuit);
+        }
+
+        public static void PrintBar(int value, int total, int length = 20)
+        {
+            // [========(x/y)===|----]
+            string bar = "";
+            int filledBarProportion = (value / total) * length;
+            for(int i = 0; i < length; i++)
+            { 
+                if (i > filledBarProportion)
+                    bar += "-"; 
+                else if (i == filledBarProportion)
+                    bar += "|"; 
+                else if (i < filledBarProportion)
+                    bar += "=";
+            }
+            bar.Insert(0, "[");
+            bar += "]";
+            Print(bar);
         }
         
         public static void PrintTutorial()
