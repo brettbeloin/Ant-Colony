@@ -11,20 +11,28 @@ namespace Ant_Colony.Controllers
     {
 
         private static int daysUntilFinalBoss = 7;
+
+        private static bool eventAvaliable = false;
         public static void Run()
         {
+            string[]? extraOptions = { "Set Demo Stats", "Tutorial"};
             Menu.Print("Welcome To");
             do
             {
+                if (eventAvaliable)
+                {
+                    extraOptions = [ "Event" ];
+                }
                 Menu.PrintLogo();
                 DisplayStats();
-                int response = Menu.MainMenu();
+                int response = Menu.MainMenu(extraOptions);
                 HandleMainMenuResponse(response);
                 if (AntManager.CountAnts() == 0)
                 {
                     SetMenuScreen();
                     EndDay();
                 }
+                extraOptions = null;
             } while (true);
         }
         
@@ -67,6 +75,17 @@ namespace Ant_Colony.Controllers
                 case 4:
                     EnterDungeon();
                     break;
+                case 5:
+                    //TODO: Use item here
+                    break;
+                case 6:
+                    if (eventAvaliable)
+                    {
+                        // TODO: EVENT STUFF HERE
+                        break;
+                    }
+                    AntManager.SetDemoConfig();
+                    break;
                 default: return;
             }
         }
@@ -82,6 +101,7 @@ namespace Ant_Colony.Controllers
             Menu.PrintLogo();
             DisplayStats();
         }
+
 
         public static void GatherLeaves()
         {

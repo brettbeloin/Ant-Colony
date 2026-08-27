@@ -247,5 +247,19 @@ namespace Ant_Colony.Controllers
             }
         }
 
+        public static void SetDemoConfig()
+        {
+            VirtWorkerAntAmount = 20;
+            VirtBroodAntAmount = 10;
+            VirtLeafCutterAntAmount = 10;
+
+            for (int i = 0; i < 3; i++) 
+            { 
+                AntSwarm.Add(InstantiateAnt(0)); 
+                AntSwarm.Add(InstantiateAnt(1));
+                AntSwarm.Add(InstantiateAnt(2));
+            }
+        }
+
     }
 }
