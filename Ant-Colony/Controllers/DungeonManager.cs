@@ -11,7 +11,7 @@ namespace Ant_Colony.Controllers
     public class DungeonManager
     {
         List<BaseAnt> ants = AntManager.AntSwarm;
-        List<Enemies> enemies;
+        List<Enemies> enemies = new List<Enemies>();
         int expForLevelUp = 0;
         int totalExp = 0;
         //DO NOT MAKE STATIC
@@ -40,8 +40,13 @@ namespace Ant_Colony.Controllers
                     case 1:
                         // Get Player Atk and Def Stats
                         List<BaseAnt> attackAnts = Menu.SelectAttackingAnts(ants);
-                        int atkTotal = GetAttack(attackAnts);
-                        int defTotal = GetDefence(attackAnts);
+                        int atkTotal = 0;
+                        int defTotal = 0;
+                        if (attackAnts.Count != 0)
+                        {
+                            atkTotal = GetAttack(attackAnts);
+                            defTotal = GetDefence(attackAnts);
+                        }
 
                         // Attack Enemies
                         Enemies enemyBeingAttacked = Menu.SelectEnemy(enemies);
@@ -103,14 +108,31 @@ namespace Ant_Colony.Controllers
         public int GetDefence(List<BaseAnt> attackAnts)
         {
             int defence = 0;
+            bool antIsAtk = false;
+            List <BaseAnt> defAnts = new List<BaseAnt>();
 
-            foreach (BaseAnt atkAnt in attackAnts)
+            foreach (BaseAnt ant in ants)
             {
-                foreach (BaseAnt ant in ants)
+                antIsAtk = false;
+                foreach (BaseAnt atkAnt in attackAnts)
                 {
-                    defence += (atkAnt.AntID == ant.AntID) ? atkAnt.BASE_DEFENCE : 0;
+                    if(ant.AntID == atkAnt.AntID)
+                    {
+                        antIsAtk = true;
+                        break;
+                    }
+                }
+                if (!antIsAtk)
+                {
+                    defAnts.Add(ant);
                 }
             }
+
+            foreach(BaseAnt ant in defAnts)
+            {
+                defence += ant.BASE_DEFENCE;
+            }
+
 
             return defence;
         }
