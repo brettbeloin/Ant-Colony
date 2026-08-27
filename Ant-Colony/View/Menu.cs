@@ -97,12 +97,12 @@ namespace Ant_Colony.View
         public static int MainMenu(string[]? extraOptions = null )
         {
             Print("Please choose an action", true, ConsoleColor.Blue);
-            string[] options = { "Gather Leaves", "Tend Aphid Farm", "Nourish Larvae", "Enter The Dungeon" };
+            List<string> options = new List<string>{"Gather Leaves", "Tend Aphid Farm", "Nourish Larvae", "Enter The Dungeon", "Use Item"};
             if (extraOptions != null)
-            { 
+            {
                 foreach(string option in extraOptions)
                 { 
-                    options.Append(option);
+                    options.Add(option);
                 }
             }
             return CIO.PromptForMenuSelection(options, false);
@@ -217,5 +217,11 @@ namespace Ant_Colony.View
             return CIO.PromptForMenuSelection(antTypes, AllowQuit);
         }
         
+        public static void PrintTutorial()
+        {
+            // TODO: ADD TUTORIAL HERE
+            Print("Play the game and figure it out");
+        }
+
     } 
 }
