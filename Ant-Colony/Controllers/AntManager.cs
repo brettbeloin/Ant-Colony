@@ -54,10 +54,21 @@ namespace Ant_Colony.Controllers
         } = 0;
 
         public static int Larvae {  get; 
-            private set 
+            set 
             {
                 field = Math.Max(0, value); 
             } 
+        } = 0;
+
+ 
+        public static int GlobalWorkBonus
+        {
+            get {
+                int currentBonus = field;
+                field = Math.Max(0, field - 1);
+                return currentBonus; 
+            }
+            set { field = Math.Max(0, value); }
         } = 0;
 
         public static List<BaseAnt> AntSwarm { get; private set; } = new List<BaseAnt>();
@@ -137,14 +148,14 @@ namespace Ant_Colony.Controllers
 
             int leafCuttersAllocated = 0;
             int broodsAllocated = 0;
-            int leafCuttersAllocates = 0;
+            int workersAllocated = 0;
             do
             {
                 reallocate = false;
                 antType = Menu.SelectAntType(AllowQuit:true)-1;
                 leafCuttersAllocated = 0;
                 broodsAllocated = 0;
-                leafCuttersAllocates = 0;
+                workersAllocated = 0;
                 try
                 { 
                     switch (antType)
@@ -153,7 +164,7 @@ namespace Ant_Colony.Controllers
                             return [0, 0];
                         case (int)AntTypes.LEAF_CUTTER:
                             allocation = Menu.SelectAmount(VirtLeafCutterAntAmount - UsedVirtLeafCutterAnt);
-                            leafCuttersAllocates = allocation;
+                            leafCuttersAllocated = allocation;
                             break;
                         case (int)AntTypes.BROOD:
                             allocation = Menu.SelectAmount(VirtBroodAntAmount - UsedVirtBroodAnt);
@@ -161,7 +172,7 @@ namespace Ant_Colony.Controllers
                             break;
                         default: 
                             allocation = Menu.SelectAmount(VirtWorkerAntAmount - UsedVirtWorkerAnt);
-                            leafCuttersAllocated = allocation;
+                            workersAllocated = allocation;
                             break;
                     }
                     if (allocation <= 0)
@@ -178,11 +189,17 @@ namespace Ant_Colony.Controllers
 
 
             } while(reallocate);
-            UsedVirtWorkerAnt += leafCuttersAllocated;
+            UsedVirtWorkerAnt += workersAllocated;
             UsedVirtLeafCutterAnt += leafCuttersAllocated;
             UsedVirtBroodAnt += broodsAllocated;
 
             return [antType, allocation];
+        }
+        public static void DeallocateAnts()
+        {
+            UsedVirtBroodAnt = 0;
+            UsedVirtLeafCutterAnt = 0;
+            UsedVirtWorkerAnt = 0; 
         }
 
         /// <summary>
@@ -196,7 +213,7 @@ namespace Ant_Colony.Controllers
         {
             int foodSpent = ResourceManager.EatFood(AmountOfAnts);
             ResourceManager.EatFood(foodSpent);
-            Larvae += foodSpent * LarvaePerAnt;
+            Larvae += foodSpent * LarvaePerAnt + GlobalWorkBonus;
         }
 
         
@@ -227,6 +244,20 @@ namespace Ant_Colony.Controllers
                         break;
                     default: break;
                 }
+            }
+        }
+
+        public static void SetDemoConfig()
+        {
+            VirtWorkerAntAmount = 20;
+            VirtBroodAntAmount = 10;
+            VirtLeafCutterAntAmount = 10;
+
+            for (int i = 0; i < 3; i++) 
+            { 
+                AntSwarm.Add(InstantiateAnt(0)); 
+                AntSwarm.Add(InstantiateAnt(1));
+                AntSwarm.Add(InstantiateAnt(2));
             }
         }
 

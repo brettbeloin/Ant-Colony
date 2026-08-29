@@ -10,31 +10,134 @@ namespace Ant_Colony.Controllers
 {
     public class DungeonManager
     {
-        List<BaseAnt> ants;
-        List<Enemies> enemies;
+        List<BaseAnt> ants = AntManager.AntSwarm;
+        List<Enemies> enemies = new List<Enemies>();
         int expForLevelUp = 0;
         int totalExp = 0;
         //DO NOT MAKE STATIC
         public void RunDungeon()
         {
+            bool playerIsAlive = true;
+            do
+            {
+                playerIsAlive = SimulateDungeon();
+            }while (playerIsAlive);
+
+        }
+
+        public bool SimulateDungeon()
+        {
             SetupDungeon();
             bool enemiesToFight = enemies.Count != 0;
             int playerHealth = ants.Count();
+
             do
             {
                 // Handle CombatManager things here
-                int combatSelection = 0;
-                if(combatSelection == 1)
+                int combatSelection = Menu.SelectCombatOptions();
+                switch (combatSelection)
                 {
-                    List<BaseAnt> attackAnts = Menu.SelectAttackingAnts(ants);
-                }
+                    case 1:
+                        // Get Player Atk and Def Stats
+                        List<BaseAnt> attackAnts = Menu.SelectAttackingAnts(ants);
+                        int atkTotal = 0;
+                        int defTotal = 0;
+                        if (attackAnts.Count != 0)
+                        {
+                            atkTotal = GetAttack(attackAnts);
+                            defTotal = GetDefence(attackAnts);
+                        }
 
+                        // Attack Enemies
+                        Enemies enemyBeingAttacked = Menu.SelectEnemy(enemies);
+                        CombatManager.AttackEnemy(atkTotal, enemyBeingAttacked);
+                        Menu.Print($"{enemyBeingAttacked} took {atkTotal} damage!", true, ConsoleColor.Green);
+
+                        //Remove enemy if dead and level up
+                        CombatManager.PopDeadEnemies(enemies);
+                        //if(exp > 0)
+                        //{
+                        //    IncreaseExp(exp);
+                        //    CheckForLevelUp();
+                        //}
+
+                        // Attack Player
+                        int enemyAtk = GetEnemyAtkTotal(enemies);
+                        int damageDelt = CombatManager.AttackPlayer(defTotal, enemyAtk);
+
+                        // Remove random ants depending on damageDelt
+                        AntManager.PopRandomAnt(damageDelt);
+                        if (damageDelt != 0)
+                        {
+                            Menu.Print($"{damageDelt} ants were lost!", true, ConsoleColor.Red);
+                            playerHealth = ants.Count();
+                        }
+
+                        break;
+                }
 
                 enemiesToFight = enemies.Count != 0;
             } while (enemiesToFight || playerHealth == 0);
+            if (!enemiesToFight)
+            {
+                int expEarned = CombatManager.DetermineXp();
+                Menu.Print($"You earned {expEarned} exp");
+                IncreaseExp(expEarned);
+                CheckForLevelUp();
+
+                return true;
+            }
+            else
+            {
+                Menu.Print($"All your ants have been squashed!", true, ConsoleColor.Red);
+                return false;
+            }
         }
 
-        public int getAttack(List<BaseAnt> attackAnts)
+        public int GetEnemyAtkTotal(List<Enemies> enemies)
+        {
+            int enemyAtk = 0;
+            foreach( Enemies enemy in enemies)
+            {
+                enemyAtk += enemy.Stats.atk;
+            }
+
+            return enemyAtk;
+        }
+
+        public int GetDefence(List<BaseAnt> attackAnts)
+        {
+            int defence = 0;
+            bool antIsAtk = false;
+            List <BaseAnt> defAnts = new List<BaseAnt>();
+
+            foreach (BaseAnt ant in ants)
+            {
+                antIsAtk = false;
+                foreach (BaseAnt atkAnt in attackAnts)
+                {
+                    if(ant.AntID == atkAnt.AntID)
+                    {
+                        antIsAtk = true;
+                        break;
+                    }
+                }
+                if (!antIsAtk)
+                {
+                    defAnts.Add(ant);
+                }
+            }
+
+            foreach(BaseAnt ant in defAnts)
+            {
+                defence += ant.BASE_DEFENCE;
+            }
+
+
+            return defence;
+        }
+
+        public int GetAttack(List<BaseAnt> attackAnts)
         {
             int attackTotal = 0;
             foreach(BaseAnt ant in attackAnts)
@@ -143,9 +246,9 @@ namespace Ant_Colony.Controllers
             }
         }
 
-        public void IncreaseExp(Enemies enemy)
+        public void IncreaseExp(int exp)
         {
-            totalExp += enemy.Exp;
+            totalExp += exp;
         }
 
         public void CheckForLevelUp()
@@ -157,13 +260,19 @@ namespace Ant_Colony.Controllers
                 {
                     totalExp -= expForLevelUp;
                     SetXpForLevelUp();
-                    foreach (BaseAnt ant in ants)
-                    {
-                        ant.LevelUp();
-                    }
+                    LevelUpAnts();
+                    Menu.Print("Your ants have leveled up!", true, ConsoleColor.Green);
                 }
                 AnotherLevelUpNeeded = totalExp >= expForLevelUp;
             } while (AnotherLevelUpNeeded);
+        }
+
+        public void LevelUpAnts()
+        {
+            foreach (BaseAnt ant in ants)
+            {
+                ant.LevelUp();
+            }
         }
     }
 }

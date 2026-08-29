@@ -9,31 +9,52 @@ namespace Ant_Colony.Controllers
 {
     public static class GameManager
     {
+
+        private static int daysUntilFinalBoss = 7;
+
+        private static bool eventAvaliable = false;
         public static void Run()
         {
+            string[]? extraOptions = { "Set Demo Stats", "Tutorial"};
             Menu.Print("Welcome To");
             do
             {
+                if (eventAvaliable)
+                {
+                    extraOptions = [ "Event" ];
+                }
                 Menu.PrintLogo();
                 DisplayStats();
-                int response = Menu.MainMenu();
-                HandleMainMenuResponse(response); 
+                int response = Menu.MainMenu(extraOptions);
+                HandleMainMenuResponse(response);
+                if (AntManager.CountAnts() == 0)
+                {
+                    SetMenuScreen();
+                    EndDay();
+                }
+                extraOptions = null;
             } while (true);
         }
+        
+        public static void EndDay()
+        {
+            daysUntilFinalBoss--;
+            AntManager.GrowLarvae();
+            AntManager.DeallocateAnts();
+        }
+
         public static void DisplayStats()
         {
             string[] stats =
             [
+                $"Days Remaining : {daysUntilFinalBoss}",
                 "Resources :",
                 $"\tLeaves : {ResourceManager.Leaves}",
                 $"\tFood : {ResourceManager.Food}",
                 "Ants :",
-                $"\tTotal Worker Ants : {AntManager.VirtWorkerAntAmount}",
-                $"\tUsed Worker Ants : {AntManager.UsedVirtWorkerAnt}",
-                $"\tTotal Leaf Cutter Ants : {AntManager.VirtLeafCutterAntAmount}",
-                $"\tUsed Leaf Cutter Ants : {AntManager.UsedVirtLeafCutterAnt}",
-                $"\tTotal Brood Ants : {AntManager.VirtBroodAntAmount}",
-                $"\tUsed Broot Ants : {AntManager.UsedVirtBroodAnt}",
+                $"\tWorker Ants : {AntManager.VirtWorkerAntAmount-AntManager.UsedVirtWorkerAnt}/{AntManager.VirtWorkerAntAmount}",
+                $"\tLeaf Cutter Ants : {AntManager.VirtLeafCutterAntAmount-AntManager.UsedVirtLeafCutterAnt}/{AntManager.VirtLeafCutterAntAmount}",
+                $"\tBrood Ants : {AntManager.VirtBroodAntAmount-AntManager.UsedVirtBroodAnt}/{AntManager.VirtBroodAntAmount}",
                 $"\tLarvae : {AntManager.Larvae}",
             ];
             Menu.PrintStats(stats);
@@ -54,8 +75,24 @@ namespace Ant_Colony.Controllers
                 case 4:
                     EnterDungeon();
                     break;
+                case 5:
+                    //TODO: Use item here
+                    break;
+                case 6:
+                    if (eventAvaliable)
+                    {
+                        // TODO: EVENT STUFF HERE
+                        break;
+                    }
+                    AntManager.SetDemoConfig();
+                    break;
                 default: return;
             }
+        }
+
+        public static void RunFinalBoss()
+        {
+
         }
 
         public static void SetMenuScreen()
@@ -64,6 +101,7 @@ namespace Ant_Colony.Controllers
             Menu.PrintLogo();
             DisplayStats();
         }
+
 
         public static void GatherLeaves()
         {
@@ -102,7 +140,7 @@ namespace Ant_Colony.Controllers
 
         public static void EnterDungeon()
         {
-            Menu.Print("Unfortunantly, this Has not been completed yet", true, ConsoleColor.Red); 
+            new DungeonManager().RunDungeon();
         }
     }
 }
