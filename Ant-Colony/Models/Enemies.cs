@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Ant_Colony.Controllers;
 
 namespace Ant_Colony.Models
 {
@@ -10,7 +11,7 @@ namespace Ant_Colony.Models
         public int def  { get; set; }
     }
     
-    public abstract class Enemies
+    public class Enemies
     {
         public Stats Stats  { get; set; }
         public string Name { get; set; }
@@ -19,8 +20,6 @@ namespace Ant_Colony.Models
         public int Exp { get; set; }
         public bool IsBoss { get; set; }
         
-        //TODO: talk with jermy and get items
-
         public Enemies()
         {
             Stats = new Stats {atk =5, def = 5};
@@ -41,12 +40,10 @@ namespace Ant_Colony.Models
             IsBoss  = isBoss;
         }
 
-        public abstract bool Attack();
-        
-        public abstract bool Defend();
-
         public int DetermineLevel()
         {
+            
+            return Lvl;
             throw new NotImplementedException(); 
         }
 

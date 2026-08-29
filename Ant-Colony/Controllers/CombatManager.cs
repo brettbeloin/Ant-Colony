@@ -30,25 +30,49 @@ public static class CombatManager
 
     public static void PopDeadEnemies(List<Enemies> enemies)
     {
-        //int totalExp = 0;
+        int totalExp = 0;
         foreach(Enemies enemy in enemies)
         {
             if (enemy.Health <= 0)
             {
                 enemies.Remove(enemy);
-                //int exp = DetermineXp();
+                int exp = DetermineXp(enemy);
+                
                 Menu.Print($"{enemy} has been defeated!");
-                //totalExp += exp;
+                
+                totalExp += exp;
             }
         }
 
         //return totalExp;
     }
 
-
-
-    public static int DetermineXp()
+    private static float HealthLossRatio()
     {
-        return 500;
+        
+        return float.PositiveInfinity;
+    }
+
+    /// <summary>
+    /// decays the amount if XP that is earned based on how much health was lost.
+    /// </summary>
+    /// <param name="enemies">The current ennemy that is being fought.</param>
+    /// <returns> The modified XP value.</returns>
+    public static int DetermineXp(Enemies enemies)
+    {
+        float healthLoss = HealthLossRatio();
+        int rateOfDecay = (enemies.IsBoss) ? 5 : 3;
+        int reward = 0;
+
+        if (healthLoss <= .20f)
+        {
+            reward = enemies.Exp;
+        }
+        else
+        {
+            reward = Double.ConvertToInteger<Int32>(5 + enemies.Exp * Math.Pow(Math.E, -rateOfDecay * (healthLoss - .20f)));
+        }
+        
+        return reward;
     }
 }
