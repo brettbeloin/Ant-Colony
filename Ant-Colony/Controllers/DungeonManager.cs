@@ -12,6 +12,8 @@ namespace Ant_Colony.Controllers
     {
         List<BaseAnt> ants = AntManager.AntSwarm;
         List<Enemies> enemies = new List<Enemies>();
+        List<Enemies> enemyListForExp = new List<Enemies>();
+
         int expForLevelUp = 0;
         int totalExp = 0;
         //DO NOT MAKE STATIC
@@ -51,7 +53,7 @@ namespace Ant_Colony.Controllers
                         // Attack Enemies
                         Enemies enemyBeingAttacked = Menu.SelectEnemy(enemies);
                         CombatManager.AttackEnemy(atkTotal, enemyBeingAttacked);
-                        Menu.Print($"{enemyBeingAttacked} took {atkTotal} damage!", true, ConsoleColor.Green);
+                        Menu.Print($"{enemyBeingAttacked.Name} took {atkTotal} damage!", true, ConsoleColor.Green);
 
                         //Remove enemy if dead and level up
                         CombatManager.PopDeadEnemies(enemies);
@@ -80,7 +82,11 @@ namespace Ant_Colony.Controllers
             } while (enemiesToFight || playerHealth == 0);
             if (!enemiesToFight)
             {
-                int expEarned = CombatManager.DetermineXp();
+                int expEarned = 0;
+                foreach(Enemies enemy in enemyListForExp)
+                {
+                    expEarned += CombatManager.DetermineExp(enemy);
+                }
                 Menu.Print($"You earned {expEarned} exp");
                 IncreaseExp(expEarned);
                 CheckForLevelUp();
@@ -232,6 +238,7 @@ namespace Ant_Colony.Controllers
                     enemies.Add(new Spider(new Stats() { atk=5, def=5}, "Spider", 1, 20, 500, false));
                     break;
             }
+            enemyListForExp = enemies.ToList();
         }
 
         public void SetXpForLevelUp()
