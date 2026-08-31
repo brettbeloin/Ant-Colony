@@ -108,7 +108,7 @@ namespace Ant_Colony.Controllers
             Random rng = new Random();
             for(int i = 0; i < amountOfAnts; i++)
             {
-                int randIndex = rng.Next(amountOfAnts);
+                int randIndex = rng.Next(AntSwarm.Count()-1);
                 AntSwarm.RemoveAt(randIndex); 
             }
         } 
