@@ -7,11 +7,6 @@ public static class CombatManager
 {
     public static bool IsAlive { get; set; }
 
-    static CombatManager()
-    {
-        throw new NotImplementedException();
-    }
-
     public static void AttackEnemy(int playerDamage, Enemies enemy)
     {
         enemy.Health -= playerDamage;
@@ -30,17 +25,15 @@ public static class CombatManager
 
     public static void PopDeadEnemies(List<Enemies> enemies)
     {
-        int totalExp = 0;
+        //int totalExp = 0;
         foreach(Enemies enemy in enemies)
         {
             if (enemy.Health <= 0)
             {
                 enemies.Remove(enemy);
-                int exp = DetermineXp(enemy);
-                
+                //int exp = DetermineXp();
                 Menu.Print($"{enemy} has been defeated!");
-                
-                totalExp += exp;
+                //totalExp += exp;
             }
         }
 
@@ -49,7 +42,7 @@ public static class CombatManager
 
     private static float HealthLossRatio()
     {
-        
+
         return float.PositiveInfinity;
     }
 
@@ -72,7 +65,7 @@ public static class CombatManager
         {
             reward = Double.ConvertToInteger<Int32>(5 + enemies.Exp * Math.Pow(Math.E, -rateOfDecay * (healthLoss - .20f)));
         }
-        
+
         return reward;
     }
 }
