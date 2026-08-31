@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Drawing;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using Ant_Colony.Controllers;
@@ -224,26 +225,44 @@ namespace Ant_Colony.View
             return CIO.PromptForMenuSelection(antTypes, AllowQuit);
         }
 
-        public static void PrintBar(int value, int total, int length = 20)
+        public static void PrintBar(int value, int total, int length = 20, string? Label = null, bool showValues = true, ConsoleColor displayColor = ConsoleColor.White)
         {
             // [========(x/y)===|----]
             length = Math.Max(length, 10);
-            string bar = "";
-            int filledBarProportion = (value / total) * length;
+            StringBuilder bar = new StringBuilder();
+            int filledBarProportion = (int)(((float)value / total) * length);
             for(int i = 0; i < length; i++)
             { 
                 if (i > filledBarProportion)
-                    bar += "-"; 
+                    bar.Append("-"); 
                 else if (i == filledBarProportion)
-                    bar += "|"; 
+                    bar.Append("|"); 
                 else if (i < filledBarProportion)
-                    bar += "=";
+                    bar.Append("=");
             }
-            int middleIndex = length / 2;
-            bar.Insert(middleIndex, $"({value}/{total})");
+            if (showValues)
+            { 
+                int middleIndex = length / 2;
+                string visibleNumbers = $"({value}/{total})";
+                bar.Remove(middleIndex-(visibleNumbers.Length/2), visibleNumbers.Length); 
+                bar.Insert(middleIndex-(visibleNumbers.Length/2), visibleNumbers);
+            }
             bar.Insert(0, "[");
-            bar += "]";
-            Print(bar);
+            bar.Append("]");
+
+            if (!String.IsNullOrEmpty(Label)) 
+            {
+                StringBuilder sb = new StringBuilder();
+                int amountOfPadding = (bar.Length / 2) - (Label.Length / 2);
+                for(int padding = 0; padding < amountOfPadding; padding++)
+                {
+                    sb.Append(" ");
+                }
+                sb.Append(Label);
+                Print(sb.ToString(), true, foregroundColor: displayColor);
+            }
+            
+            Print(bar.ToString(), foregroundColor: displayColor);
         }
         
         public static void PrintTutorial()
