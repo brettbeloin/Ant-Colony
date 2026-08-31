@@ -185,7 +185,13 @@ namespace Ant_Colony.View
                 {
                     break;
                 }
-                selectedAnts.Add(ants[response - 1]);
+                if (selectedAnts.Contains(ants[response - 1]))
+                {
+                    selectedAnts.Remove(ants[response -1]);
+                }else
+                { 
+                    selectedAnts.Add(ants[response - 1]);
+                }
             } while (true);
 
             return selectedAnts;
@@ -221,6 +227,7 @@ namespace Ant_Colony.View
         public static void PrintBar(int value, int total, int length = 20)
         {
             // [========(x/y)===|----]
+            length = Math.Max(length, 10);
             string bar = "";
             int filledBarProportion = (value / total) * length;
             for(int i = 0; i < length; i++)
@@ -232,6 +239,8 @@ namespace Ant_Colony.View
                 else if (i < filledBarProportion)
                     bar += "=";
             }
+            int middleIndex = length / 2;
+            bar.Insert(middleIndex, $"({value}/{total})");
             bar.Insert(0, "[");
             bar += "]";
             Print(bar);
