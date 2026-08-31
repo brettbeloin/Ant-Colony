@@ -12,14 +12,14 @@ namespace Ant_Colony.Controllers
 
         private static int daysUntilFinalBoss = 7;
 
-        private static bool eventAvaliable = false;
+        private static OverworldEvents currentEvent = OverworldEvents.NO_EVENT;
         public static void Run()
         {
             string[]? extraOptions = { "Set Demo Stats", "Tutorial"};
             Menu.Print("Welcome To");
             do
             {
-                if (eventAvaliable)
+                if (currentEvent != OverworldEvents.NO_EVENT)
                 {
                     extraOptions = [ "Event" ];
                 }
@@ -52,6 +52,7 @@ namespace Ant_Colony.Controllers
                 $"\tLeaves : {ResourceManager.Leaves}",
                 $"\tFood : {ResourceManager.Food}",
                 "Ants :",
+                $"\tBattle Swarm : {AntManager.AntSwarm.Count}",
                 $"\tWorker Ants : {AntManager.VirtWorkerAntAmount-AntManager.UsedVirtWorkerAnt}/{AntManager.VirtWorkerAntAmount}",
                 $"\tLeaf Cutter Ants : {AntManager.VirtLeafCutterAntAmount-AntManager.UsedVirtLeafCutterAnt}/{AntManager.VirtLeafCutterAntAmount}",
                 $"\tBrood Ants : {AntManager.VirtBroodAntAmount-AntManager.UsedVirtBroodAnt}/{AntManager.VirtBroodAntAmount}",
