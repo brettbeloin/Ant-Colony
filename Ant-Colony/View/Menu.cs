@@ -141,7 +141,7 @@ namespace Ant_Colony.View
         public static int SelectCombatOptions() 
         { 
             string[] options = { "Fight", "Use Item", "Leave" };
-            Print("Please select the options for this combat", true, ConsoleColor.Blue);
+            Print("Please select the options for combat", true, ConsoleColor.Blue);
             return CIO.PromptForMenuSelection(options, false);
         }
 
@@ -155,9 +155,15 @@ namespace Ant_Colony.View
             throw new NotImplementedException();
         }
  
+
         public static void PrintCombatScreen(List<BaseAnt> ants, List<Enemies> enemies)
         {
-            throw new NotImplementedException();
+            Print("Enemies", foregroundColor:ConsoleColor.Red);
+            foreach (Enemies enemy in enemies) 
+            { 
+                //PrintBar(enemy.H) DO LATER
+            }
+
         }
 
         public static List<BaseAnt> SelectAttackingAnts(List<BaseAnt> ants)
@@ -203,7 +209,7 @@ namespace Ant_Colony.View
             Print("Please Select an enemy to attack", true, ConsoleColor.Blue);
             for(int i = 0; i < enemies.Count(); i++)
             {
-                Print($"{i + 1}: {enemies}"); 
+                Print($"{i + 1}: {enemies[i]}"); 
             }
             Print($"0: Cancel Selection");
             int response = CIO.PromptForInt($"(0-{enemies.Count()})", 0, enemies.Count()+1);
@@ -225,6 +231,15 @@ namespace Ant_Colony.View
             return CIO.PromptForMenuSelection(antTypes, AllowQuit);
         }
 
+        /// <summary>
+        /// Prints a bar like:"[========(x/y)===|----]"
+        /// </summary>
+        /// <param name="value">the filled proportion of the bar</param>
+        /// <param name="total">the total of the bar</param>
+        /// <param name="length">the length of the bar</param>
+        /// <param name="Label">an optional label over the bar when it prints</param>
+        /// <param name="showValues">shows the '(x/y)' of the bar in the center</param>
+        /// <param name="displayColor">the color the bar is printed in</param>
         public static void PrintBar(int value, int total, int length = 20, string? Label = null, bool showValues = true, ConsoleColor displayColor = ConsoleColor.White)
         {
             // [========(x/y)===|----]

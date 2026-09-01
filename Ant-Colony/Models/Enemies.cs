@@ -16,7 +16,10 @@ namespace Ant_Colony.Models
         public Stats Stats  { get; set; }
         public string Name { get; set; }
         public int Lvl { get; set; }
-        public int Health { get; set; }
+        public int Health { get; set { field = Math.Clamp(value, 0, MaxHealth); } }
+
+        public int MaxHealth { get; set { field = Math.Max(0, value); } }
+
         public int Exp { get; set; }
         public bool IsBoss { get; set; }
         
@@ -26,6 +29,7 @@ namespace Ant_Colony.Models
             Name = "Stinky";
             Lvl = 1;
             Health = 10;
+            MaxHealth = Health;
             Exp = 5;
             IsBoss = false;
         }
@@ -36,6 +40,7 @@ namespace Ant_Colony.Models
             Name = name;
             Lvl = lvl;
             Health = health;
+            MaxHealth = health;
             Exp = exp;
             IsBoss  = isBoss;
         }
