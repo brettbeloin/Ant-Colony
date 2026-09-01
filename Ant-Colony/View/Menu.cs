@@ -139,9 +139,11 @@ namespace Ant_Colony.View
         }
 
         public static int SelectCombatOptions() 
-        { 
-            
-            string[] options = { "Fight", "Use Item", "Leave" };
+        {
+            //ClearScreen();
+            //PrintLogo();
+            Print("You are in the dungeon, Do you wish to Fight or leave?");
+            string[] options = { "Fight", "Leave" };
             Print("Please select the options for combat", true, ConsoleColor.Blue);
             return CIO.PromptForMenuSelection(options, false);
         }
@@ -149,8 +151,8 @@ namespace Ant_Colony.View
 
         public static void PrintCombatScreen(List<BaseAnt> ants, List<Enemies> enemies)
         {
-            ClearScreen();
-            PrintLogo();
+            //ClearScreen();
+            //PrintLogo();
             Print("Enemies", foregroundColor:ConsoleColor.Red);
             foreach (Enemies enemy in enemies) 
             {

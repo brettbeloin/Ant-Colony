@@ -77,14 +77,6 @@ namespace Ant_Colony.Controllers
                     EnterDungeon();
                     break;
                 case 5:
-                    //TODO: Use item here
-                    break;
-                case 6:
-                    if (currentEvent != OverworldEvents.NO_EVENT)
-                    {
-                        // TODO: EVENT STUFF HERE
-                        break;
-                    }
                     AntManager.SetDemoConfig();
                     break;
                 default: return;
