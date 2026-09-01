@@ -99,7 +99,7 @@ namespace Ant_Colony.View
         public static int MainMenu(string[]? extraOptions = null )
         {
             Print("Please choose an action", true, ConsoleColor.Blue);
-            List<string> options = new List<string>{"Gather Leaves", "Tend Aphid Farm", "Nourish Larvae", "Enter The Dungeon", "Use Item"};
+            List<string> options = new List<string>{"Gather Leaves", "Tend Aphid Farm", "Nourish Larvae", "Enter The Dungeon" };
             if (extraOptions != null)
             {
                 foreach(string option in extraOptions)
@@ -140,28 +140,21 @@ namespace Ant_Colony.View
 
         public static int SelectCombatOptions() 
         { 
+            
             string[] options = { "Fight", "Use Item", "Leave" };
             Print("Please select the options for combat", true, ConsoleColor.Blue);
             return CIO.PromptForMenuSelection(options, false);
-        }
-
-        public static void PrintItems(List<BaseItem> itemList)
-        {
-            throw new NotImplementedException();
-        }
-
-        public static int SelectItem(List<BaseItem> itemList)
-        {
-            throw new NotImplementedException();
         }
  
 
         public static void PrintCombatScreen(List<BaseAnt> ants, List<Enemies> enemies)
         {
+            ClearScreen();
+            PrintLogo();
             Print("Enemies", foregroundColor:ConsoleColor.Red);
             foreach (Enemies enemy in enemies) 
-            { 
-                //PrintBar(enemy.H) DO LATER
+            {
+                PrintBar(enemy.Health, enemy.MaxHealth, Label: enemy.Name);
             }
 
         }
@@ -175,6 +168,7 @@ namespace Ant_Colony.View
             do
             { 
                 ClearScreen();
+                PrintLogo();
                 Print("Select which ants you would like to attack", true, ConsoleColor.Blue);
                 for (int i = 0; i < ants.Count(); i++)
                 { 
@@ -206,6 +200,8 @@ namespace Ant_Colony.View
 
         public static Enemies SelectEnemy(List<Enemies> enemies) 
         {
+            ClearScreen();
+            PrintLogo();
             Print("Please Select an enemy to attack", true, ConsoleColor.Blue);
             for(int i = 0; i < enemies.Count(); i++)
             {
@@ -226,6 +222,8 @@ namespace Ant_Colony.View
         /// <returns>returns an int for the type of ant, ranging from 0-2</returns>
         public static int SelectAntType(string prompt = "Please Select an ant type", bool AllowQuit = false)
         {
+            ClearScreen();
+            PrintLogo();
             Print(prompt, true, ConsoleColor.Blue);
             string[] antTypes = { "Worker Ant", "Leaf Cutter Ant", "Brood Ant" };
             return CIO.PromptForMenuSelection(antTypes, AllowQuit);
