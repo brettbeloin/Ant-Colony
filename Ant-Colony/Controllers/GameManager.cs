@@ -80,7 +80,7 @@ namespace Ant_Colony.Controllers
                     //TODO: Use item here
                     break;
                 case 6:
-                    if (eventAvaliable)
+                    if (currentEvent != OverworldEvents.NO_EVENT)
                     {
                         // TODO: EVENT STUFF HERE
                         break;

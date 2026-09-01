@@ -209,7 +209,7 @@ namespace Ant_Colony.View
             Print("Please Select an enemy to attack", true, ConsoleColor.Blue);
             for(int i = 0; i < enemies.Count(); i++)
             {
-                Print($"{i + 1}: {enemies}"); 
+                Print($"{i + 1}: {enemies[i]}"); 
             }
             Print($"0: Cancel Selection");
             int response = CIO.PromptForInt($"(0-{enemies.Count()})", 0, enemies.Count()+1);
