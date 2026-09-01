@@ -28,8 +28,9 @@ namespace Ant_Colony.Models
             Stats = new Stats {atk =5, def = 5};
             Name = "Stinky";
             Lvl = 1;
-            Health = 10;
+            
             MaxHealth = Health;
+            Health = MaxHealth;
             Exp = 5;
             IsBoss = false;
         }
@@ -38,9 +39,9 @@ namespace Ant_Colony.Models
         {
             Stats = stats;
             Name = name;
-            Lvl = lvl;
-            Health = health;
+            Lvl = lvl; 
             MaxHealth = health;
+            Health = health;
             Exp = exp;
             IsBoss  = isBoss;
         }
