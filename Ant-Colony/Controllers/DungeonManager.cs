@@ -109,6 +109,7 @@ namespace Ant_Colony.Controllers
                 Menu.Print("You've run out of moves and have to sacrifice an ant to live.");
                 AntManager.PopRandomAnt();
             }
+            return false;
         }
 
         public int GetEnemyAtkTotal(List<Enemies> enemies)

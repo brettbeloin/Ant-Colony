@@ -9,6 +9,7 @@ public static class CombatManager
 
     public static void AttackEnemy(int playerDamage, Enemies enemy)
     {
+        if (enemy == null) return;
         enemy.Health -= playerDamage;
     }
 
