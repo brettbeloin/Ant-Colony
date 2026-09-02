@@ -16,15 +16,15 @@ namespace Ant_Colony.Controllers
         public static void Run() 
         {
             string[]? extraOptions = { "Set Demo Stats", "Tutorial"};
-            Menu.Print("Welcome To");
             do
             {
+                Menu.ClearScreen();
+                Menu.PrintLogo();
+                DisplayStats();
                 if (currentEvent != OverworldEvents.NO_EVENT)
                 {
                     extraOptions = [ "Event" ];
                 }
-                Menu.PrintLogo();
-                DisplayStats();
                 int response = Menu.MainMenu(extraOptions);
                 HandleMainMenuResponse(response);
                 if (AntManager.CountAnts() == 0)
@@ -78,6 +78,9 @@ namespace Ant_Colony.Controllers
                     break;
                 case 5:
                     AntManager.SetDemoConfig();
+                    break;
+                case 6:
+                    Menu.PrintTutorial();
                     break;
                 default: return;
             }
