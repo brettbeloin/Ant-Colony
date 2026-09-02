@@ -138,6 +138,9 @@ namespace Ant_Colony.Controllers
 
         public static void EnterDungeon()
         {
+            Menu.ClearScreen();
+            Menu.PrintLogo();
+            AntManager.CreateAntSwarm();
             new DungeonManager().RunDungeon();
         }
     }

@@ -123,13 +123,13 @@ namespace Ant_Colony.Controllers
             return enemyAtk;
         }
 
-        public int GetDefence(List<BaseAnt> attackAnts)
+        public static int GetDefence(List<BaseAnt> attackAnts)
         {
             int defence = 0;
             bool antIsAtk = false;
             List <BaseAnt> defAnts = new List<BaseAnt>();
 
-            foreach (BaseAnt ant in ants)
+            foreach (BaseAnt ant in AntManager.AntSwarm)
             {
                 antIsAtk = false;
                 foreach (BaseAnt atkAnt in attackAnts)
@@ -155,7 +155,7 @@ namespace Ant_Colony.Controllers
             return defence;
         }
 
-        public int GetAttack(List<BaseAnt> attackAnts)
+        public static int GetAttack(List<BaseAnt> attackAnts)
         {
             int attackTotal = 0;
             foreach(BaseAnt ant in attackAnts)

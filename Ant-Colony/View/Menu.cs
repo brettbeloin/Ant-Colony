@@ -184,9 +184,10 @@ namespace Ant_Colony.View
             List<BaseAnt> selectedAnts = new List<BaseAnt>();
 
             do
-            { 
+            {
                 ClearScreen();
                 PrintLogo();
+                Print($"Current Attack : Defence\t{DungeonManager.GetAttack(selectedAnts)} : {DungeonManager.GetDefence(selectedAnts)}");
                 Print("Select which ants you would like to attack", true, ConsoleColor.Blue);
                 for (int i = 0; i < ants.Count(); i++)
                 { 
