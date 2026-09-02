@@ -74,14 +74,15 @@ namespace Ant_Colony.Controllers
         public static List<BaseAnt> AntSwarm { get; private set; } = new List<BaseAnt>();
 
         public static void CreateAntSwarm()
-        {   
-            List<BaseAnt> swarm = new List<BaseAnt>();
-            while (swarm.Count < 10)
+        {
+            Menu.Print($"Send ants into the dungeon ({AntSwarm.Count}/10)");
+
+            while (AntSwarm.Count < 10)
             {
                 int[] antTypeAndAmount = Menu.SelectAntTypeAndAmount(10);
                 for(int i = 0; i < antTypeAndAmount[1]; i++)
                 {
-                    swarm.Add(InstantiateAnt(antTypeAndAmount[0]));
+                    AntSwarm.Add(InstantiateAnt(antTypeAndAmount[0]));
                 }
             }
         }
