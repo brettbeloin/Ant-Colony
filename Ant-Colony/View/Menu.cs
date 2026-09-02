@@ -151,8 +151,6 @@ namespace Ant_Colony.View
 
         public static void PrintCombatScreen(List<BaseAnt> ants, List<Enemies> enemies)
         {
-            ClearScreen();
-            PrintLogo();
             StringBuilder enemyNames = new StringBuilder();
             StringBuilder enemyBars = new StringBuilder();
             StringBuilder enemyStats = new StringBuilder();
@@ -221,6 +219,7 @@ namespace Ant_Colony.View
 
         public static Enemies SelectEnemy(List<Enemies> enemies) 
         {
+            if (enemies.Count == 1) return enemies[0];
             ClearScreen();
             PrintLogo();
             Print("Please Select an enemy to attack", true, ConsoleColor.Blue);
@@ -228,7 +227,7 @@ namespace Ant_Colony.View
             {
                 Print($"{i + 1}:");
                 string[] bar = PrintBar(enemies[i].Health, enemies[i].MaxHealth, Label: enemies[i].Name, shouldPrint: false);
-                string atkDefText = $"{enemies[i].Stats.atk} :{enemies[i].Stats.def}";
+                string atkDefText = $"{enemies[i].Stats.atk} : {enemies[i].Stats.def}";
                 AlignText(bar[1], ref atkDefText);
                 Print("\t" + bar[0], foregroundColor: ConsoleColor.Red);
                 Print("\t" + bar[1], foregroundColor: ConsoleColor.Red);
@@ -336,7 +335,54 @@ namespace Ant_Colony.View
         public static void PrintTutorial()
         {
             // TODO: ADD TUTORIAL HERE
-            Print("Play the game and figure it out");
+            ClearScreen();
+            PrintLogo();
+            WorkerAnt tempWorker = new WorkerAnt();
+            LeafCutterAnt tempLeaf = new LeafCutterAnt();
+            BroodAnt tempBrood = new BroodAnt();
+            Print($"""
+                Ant Colony is a game split into 2 main gameplay loops
+                The Resource Managment and the Dungeon Crawler parts.
+
+                The Resource Management is centered around getting as many ants as possible
+                    You need to spend ants to do get leaves and tend aphid farms, 
+                    then you can spend ants tending to the larvae to grow into more ants later
+                    
+                The Dungeon Crawler is equally important. Each ant levels up as the dungeon progresses
+                It is important to have a powerful battle squadron because in a few in game days
+                your colony will be invaded.
+
+                Resource Management:
+                    * The amount of each resource you get is determined by the type of ant you send to get the resource and amount of ants sent.
+                    * when you run out of ants to command the day ends.
+                    * ants are refilled at the end of day.
+                    * at the end of day larvae grow.
+                    
+                Combat:
+                    * When you enter the dungeon, you will be asked to send what ants you want.
+                        -> You may loose these ants permanently if they die.
+                        -> You can have a max of 10 ants in the dungeon at any given point
+                    * Your health bar for combat is the amount of ants you have.
+                    * Getting hit permanently kills an ant.
+                    * You choose attacking ants, the rest will be blocking.
+                    * blocked damage does not kill ants.
+                    * The amount of turns you get per combat is decided by the amount of ants you have.
+
+                Ant Stats:
+                    (base damage : base defence)
+                    Worker ants:
+                        {tempWorker.BASE_DAMAGE} : {tempWorker.BASE_DEFENCE}
+                        Worker ant is better with the aphid farms 
+                    Leaf Cutter ants:
+                        {tempLeaf.BASE_DAMAGE} : {tempLeaf.BASE_DEFENCE}
+                        Leaf Cutter ants are better at gathering leaves 
+                    Brood ants:
+                        {tempBrood.BASE_DAMAGE} : {tempBrood.BASE_DEFENCE}
+                        Brood ants are better at tending to larvae
+                """);
+            bool isReady = VerifyAction("Are you ready to play?");
+            if (!isReady)
+                PrintTutorial();
         }
 
     } 
