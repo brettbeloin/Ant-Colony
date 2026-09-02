@@ -13,7 +13,7 @@ namespace Ant_Colony.Controllers
         private static int daysUntilFinalBoss = 7;
 
         private static OverworldEvents currentEvent = OverworldEvents.NO_EVENT;
-        public static void Run()
+        public static void Run() 
         {
             string[]? extraOptions = { "Set Demo Stats", "Tutorial"};
             Menu.Print("Welcome To");
@@ -116,7 +116,8 @@ namespace Ant_Colony.Controllers
             int antCount = allocation[1];
             int antTypeInt = allocation[0];
 
-            int effeciency = 1;
+            int effeciency = 1; 
+            effeciency = AntManager.InstantiateAnt(antTypeInt).FARM_AMOUNT;
             ResourceManager.GatherFood(antCount, effeciency);
         }
  
@@ -128,6 +129,7 @@ namespace Ant_Colony.Controllers
             int antTypeInt = allocation[0];
 
             int effeciency = 1;
+            effeciency = AntManager.InstantiateAnt(antTypeInt).LARVAE_AMOUNT;
             AntManager.TendLarvae(antCount, effeciency);
         }
 
