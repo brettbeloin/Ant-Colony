@@ -36,6 +36,7 @@ namespace Ant_Colony.Controllers
         {
             SetupDungeon();
             bool enemiesToFight = enemies.Count != 0;
+            bool didNotEscape = true;
             int playerHealth = ants.Count();
             int playerMoves = ants.Count();
 
@@ -43,6 +44,7 @@ namespace Ant_Colony.Controllers
             {
                 Menu.PrintCombatScreen(ants, enemies);
                 // Handle CombatManager things here
+                Menu.Print($"You have {playerMoves} actions remaining");
                 int combatSelection = Menu.SelectCombatOptions();
                 switch (combatSelection)
                 {
@@ -54,6 +56,11 @@ namespace Ant_Colony.Controllers
                         if (attackAnts.Count != 0)
                         {
                             atkTotal = GetAttack(attackAnts);
+                            defTotal = GetDefence(attackAnts);
+                        }
+                        else
+                        {
+                            atkTotal = 0;
                             defTotal = GetDefence(attackAnts);
                         }
 
@@ -82,11 +89,30 @@ namespace Ant_Colony.Controllers
                         playerMoves--;
 
                         break;
+                    case 2:
+                        Random rnd = new Random();
+                        int escapeNum = rnd.Next(0, 2);
+                        switch (escapeNum)
+                        {
+                            case 0:
+                                didNotEscape = false;
+                                Menu.Print("You've escaped successfully!", true, ConsoleColor.Green);
+                                break;
+                            case 1:
+                                AntManager.PopRandomAnt(1);
+                                Menu.Print("Your escape was in vain and lost 1 ant", true, ConsoleColor.Red);
+                                break;
+                        }
+                        break;
                 }
 
                 enemiesToFight = enemies.Count != 0;
-            } while (enemiesToFight && playerHealth != 0 && playerMoves != 0);
-            if (!enemiesToFight)
+            } while (enemiesToFight && playerHealth != 0 && playerMoves != 0 && didNotEscape);
+            if (!didNotEscape)
+            {
+                return false;
+            }
+            else if (!enemiesToFight)
             {
                 int expEarned = 0;
                 foreach(Enemies enemy in enemyListForExp)
@@ -99,17 +125,17 @@ namespace Ant_Colony.Controllers
 
                 return true;
             }
-            else if(playerHealth != 0)
+            else if(playerHealth <= 0)
             {
                 Menu.Print($"All your ants have been squashed!", true, ConsoleColor.Red);
                 return false;
             }
             else
             {
-                Menu.Print("You've run out of moves and have to sacrifice an ant to live.");
+                Menu.Print("You've run out of moves and have to use an ant as a decoy.");
                 AntManager.PopRandomAnt();
+                return false;
             }
-            return false;
         }
 
         public int GetEnemyAtkTotal(List<Enemies> enemies)
@@ -128,6 +154,15 @@ namespace Ant_Colony.Controllers
             int defence = 0;
             bool antIsAtk = false;
             List <BaseAnt> defAnts = new List<BaseAnt>();
+
+            if (attackAnts.Count() == 0)
+            {
+                foreach( BaseAnt ant in AntManager.AntSwarm)
+                {
+                    defence += ant.BASE_DEFENCE;
+                }
+                return defence;
+            }
 
             foreach (BaseAnt ant in AntManager.AntSwarm)
             {
