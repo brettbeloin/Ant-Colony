@@ -20,10 +20,15 @@ namespace Ant_Colony.Controllers
         public void RunDungeon()
         {
             bool playerIsAlive = true;
+            bool playerWantsToContinue = true;
             do
             {
                 playerIsAlive = SimulateDungeon();
-            }while (playerIsAlive);
+                if (playerIsAlive)
+                {
+                    playerWantsToContinue = Menu.VerifyAction("Would you like to delve deeper into the Dungeon?");
+                }
+            }while (playerIsAlive && playerWantsToContinue);
 
         }
 
@@ -32,9 +37,11 @@ namespace Ant_Colony.Controllers
             SetupDungeon();
             bool enemiesToFight = enemies.Count != 0;
             int playerHealth = ants.Count();
+            int playerMoves = ants.Count();
 
             do
             {
+                Menu.PrintCombatScreen(ants, enemies);
                 // Handle CombatManager things here
                 int combatSelection = Menu.SelectCombatOptions();
                 switch (combatSelection)
@@ -55,13 +62,8 @@ namespace Ant_Colony.Controllers
                         CombatManager.AttackEnemy(atkTotal, enemyBeingAttacked);
                         Menu.Print($"{enemyBeingAttacked.Name} took {atkTotal} damage!", true, ConsoleColor.Green);
 
-                        //Remove enemy if dead and level up
+                        //Remove enemy if dead
                         CombatManager.PopDeadEnemies(enemies);
-                        //if(exp > 0)
-                        //{
-                        //    IncreaseExp(exp);
-                        //    CheckForLevelUp();
-                        //}
 
                         // Attack Player
                         int enemyAtk = GetEnemyAtkTotal(enemies);
@@ -71,15 +73,19 @@ namespace Ant_Colony.Controllers
                         AntManager.PopRandomAnt(damageDelt);
                         if (damageDelt != 0)
                         {
-                            Menu.Print($"{damageDelt} ants were lost!", true, ConsoleColor.Red);
+                            Menu.Print($"{Math.Clamp(damageDelt, 0, 10)} ants were lost!", true, ConsoleColor.Red);
                             playerHealth = ants.Count();
+                        }else
+                        {
+                            Menu.Print("Your block was successful!", true, ConsoleColor.Green);
                         }
+                        playerMoves--;
 
                         break;
                 }
 
                 enemiesToFight = enemies.Count != 0;
-            } while (enemiesToFight || playerHealth == 0);
+            } while (enemiesToFight && playerHealth != 0 && playerMoves != 0);
             if (!enemiesToFight)
             {
                 int expEarned = 0;
@@ -93,10 +99,15 @@ namespace Ant_Colony.Controllers
 
                 return true;
             }
-            else
+            else if(playerHealth != 0)
             {
                 Menu.Print($"All your ants have been squashed!", true, ConsoleColor.Red);
                 return false;
+            }
+            else
+            {
+                Menu.Print("You've run out of moves and have to sacrifice an ant to live.");
+                AntManager.PopRandomAnt();
             }
         }
 
