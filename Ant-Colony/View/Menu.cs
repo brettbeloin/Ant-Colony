@@ -153,11 +153,25 @@ namespace Ant_Colony.View
         {
             //ClearScreen();
             //PrintLogo();
+            StringBuilder enemyNames = new StringBuilder();
+            StringBuilder enemyBars = new StringBuilder();
+            StringBuilder enemyStats = new StringBuilder();
             Print("Enemies", foregroundColor:ConsoleColor.Red);
             foreach (Enemies enemy in enemies) 
             {
-                PrintBar(enemy.Health, enemy.MaxHealth, Label: enemy.Name);
+                string[] enemyBar = PrintBar(enemy.Health, enemy.MaxHealth, Label: $"{enemy.Name}", shouldPrint: false);
+                enemyNames.Append(enemyBar[0]);
+                enemyBars.Append(enemyBar[1]);
+                string battleStats = $"{enemy.Stats.atk}/{enemy.Stats.def}";
+                AlignText(enemyBar[0], ref battleStats);
+                enemyStats.Append(battleStats);
             }
+
+            Print(enemyNames.ToString(),foregroundColor:ConsoleColor.Red);
+            Print(enemyBars.ToString(),foregroundColor:ConsoleColor.Red);
+            Print(enemyStats.ToString(),foregroundColor:ConsoleColor.Red);
+
+            PrintBar(AntManager.AntSwarm.Count, 10, Label: "Ants Remaining:" , displayColor: ConsoleColor.Green);
 
         }
 
@@ -240,7 +254,8 @@ namespace Ant_Colony.View
         /// <param name="Label">an optional label over the bar when it prints</param>
         /// <param name="showValues">shows the '(x/y)' of the bar in the center</param>
         /// <param name="displayColor">the color the bar is printed in</param>
-        public static void PrintBar(int value, int total, int length = 20, string? Label = null, bool showValues = true, ConsoleColor displayColor = ConsoleColor.White)
+        /// <returns>Returns an array of length 2, the first value is the label, if null it is "", the second is the bar itself</returns>
+        public static string[] PrintBar(int value, int total, int length = 20, string? Label = null, bool showValues = true, ConsoleColor displayColor = ConsoleColor.White, bool shouldPrint = true)
         {
             // [========(x/y)===|----]
             length = Math.Max(length, 10);
@@ -265,19 +280,40 @@ namespace Ant_Colony.View
             bar.Insert(0, "[");
             bar.Append("]");
 
+
+            string barText = bar.ToString();
             if (!String.IsNullOrEmpty(Label)) 
             {
-                StringBuilder sb = new StringBuilder();
-                int amountOfPadding = (bar.Length / 2) - (Label.Length / 2);
-                for(int padding = 0; padding < amountOfPadding; padding++)
-                {
-                    sb.Append(" ");
-                }
-                sb.Append(Label);
-                Print(sb.ToString(), true, foregroundColor: displayColor);
+                AlignText(a: barText, b: ref Label);
+                if(shouldPrint)
+                    Print(Label, true, foregroundColor: displayColor);
             }
-            
-            Print(bar.ToString(), foregroundColor: displayColor);
+            if(shouldPrint)
+                Print(bar.ToString(), foregroundColor: displayColor);
+            string[] returnValue = { Label!=null ? Label : "", barText }; 
+            return returnValue;
+        }
+        public static void AlignText(string a, ref string b)
+        {
+            if (a.Length < b.Length)
+            {
+                throw new ArgumentException("reference to string a cannot be larger than refernce to string b");
+            }
+            StringBuilder text = new StringBuilder();
+            //string smallerString = a.Length < b.Length ? a : b;
+            //string largerString = a.Length >= b.Length ? a : b;
+            int paddingAmount = (a.Length / 2) - (b.Length / 2);
+
+            for(int padding = 0; padding < paddingAmount; padding++)
+            {
+                text.Append(" ");
+            }
+            text.Append(b);
+            for (int length = text.Length; length < a.Length; length++) 
+            {
+                text.Append(" ");
+            }
+            b = text.ToString();
         }
         
         public static void PrintTutorial()

@@ -13,8 +13,9 @@ namespace Ant_Colony.Controllers
         private static int daysUntilFinalBoss = 7;
 
         private static OverworldEvents currentEvent = OverworldEvents.NO_EVENT;
-        public static void Run()
+        public static void Run() 
         {
+            Menu.PrintBar(3, 7, 30, Label: "stinyPoppy");
             string[]? extraOptions = { "Set Demo Stats", "Tutorial"};
             Menu.Print("Welcome To");
             do
