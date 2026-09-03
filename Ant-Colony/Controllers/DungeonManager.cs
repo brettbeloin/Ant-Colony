@@ -23,7 +23,7 @@ namespace Ant_Colony.Controllers
             bool playerWantsToContinue = true;
             do
             {
-                playerIsAlive = SimulateDungeon();
+                playerIsAlive = SimulateDungeon(false);
                 if (playerIsAlive)
                 {
                     playerWantsToContinue = Menu.VerifyAction("Would you like to delve deeper into the Dungeon?");
@@ -32,7 +32,14 @@ namespace Ant_Colony.Controllers
 
         }
 
-        public bool SimulateDungeon()
+        public void RunBossFight()
+        {
+            //!!!!!!!!!!!!!IMPORTANT!!!!!!!!!!!!!
+            //Add any additional logic to have the battle run as intended here
+            SimulateDungeon(true);
+        }
+
+        public bool SimulateDungeon(bool isBossFight)
         {
             SetupDungeon();
             bool enemiesToFight = enemies.Count != 0;
@@ -90,6 +97,13 @@ namespace Ant_Colony.Controllers
 
                         break;
                     case 2:
+                        // See if this is a boss fight
+                        if (isBossFight)
+                        {
+                            Menu.Print("You IDIOT! You can't run now. You lose 1 ant from foolishness", true, ConsoleColor.Red);
+                            AntManager.PopRandomAnt(1);
+                        }
+
                         Random rnd = new Random();
                         int escapeNum = rnd.Next(0, 2);
                         switch (escapeNum)
@@ -108,6 +122,24 @@ namespace Ant_Colony.Controllers
 
                 enemiesToFight = enemies.Count != 0;
             } while (enemiesToFight && playerHealth != 0 && playerMoves != 0 && didNotEscape);
+
+            // Handle Boss Fight outcomes
+            if (isBossFight && enemiesToFight)
+            {
+                Menu.Print("Your colony has emerged victorious!");
+                return true;
+            }
+            else if (isBossFight && playerHealth <= 0)
+            {
+                Menu.Print("You've lost the battle. All now is lost.", true, ConsoleColor.Red);
+                return false;
+            }
+            else if (isBossFight && playerMoves <= 0)
+            {
+                Menu.Print("The colony can't keep fighting. All now is lost.", true, ConsoleColor.Red);
+            }
+
+            // Handle All fight outcomes
             if (!didNotEscape)
             {
                 return false;

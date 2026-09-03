@@ -40,11 +40,18 @@ public static class CombatManager
                 //totalExp += exp;
             }
         }
-        for (int i = 0; i < copyOfEnemies.Count-1; i++)
+        for (int i = 0; i < copyOfEnemies.Count; i++)
         {
-            if (copyOfEnemies[i].Health <= 0)
+            try
             {
-                enemies.Remove(copyOfEnemies[i]);
+                if (copyOfEnemies[i].Health <= 0)
+                {
+                    enemies.Remove(copyOfEnemies[i]);
+                }
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                continue;
             }
         }
 
