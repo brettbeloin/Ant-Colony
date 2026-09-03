@@ -79,8 +79,8 @@ namespace Ant_Colony.Controllers
 
             while (AntSwarm.Count < 10)
             {
-                int[] antTypeAndAmount = Menu.SelectAntTypeAndAmount(10);
-                if (antTypeAndAmount[0] == 0) return;
+                int[] antTypeAndAmount = Menu.SelectAntTypeAndAmount(10, true);
+                if (antTypeAndAmount[0] == -1) return;
                 for(int i = 0; i < antTypeAndAmount[1]; i++)
                 {
                     AntSwarm.Add(InstantiateAnt(antTypeAndAmount[0]));

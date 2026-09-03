@@ -32,8 +32,10 @@ namespace Ant_Colony.Controllers
                     SetMenuScreen();
                     EndDay();
                 }
+                if (daysUntilFinalBoss <= 0) break;
                 extraOptions = null;
             } while (true);
+            RunFinalBoss();
         }
         
         public static void EndDay()
@@ -80,10 +82,13 @@ namespace Ant_Colony.Controllers
                     EnterDungeon();
                     break;
                 case 6:
+                    EndDay();
+                    break;
+                case 7:
                     AntManager.SetDemoConfig();
                     ResourceManager.SetDemoResourceAmounts();
                     break;
-                case 7:
+                case 8:
                     Menu.PrintTutorial();
                     break;
                 default: return;
@@ -105,6 +110,15 @@ namespace Ant_Colony.Controllers
 
         public static void RunFinalBoss()
         {
+            Menu.ClearScreen();
+            Menu.PrintLogo();
+            DisplayStats();
+            Menu.Print("It is time for the invasion", foregroundColor: ConsoleColor.Red);
+            AntManager.CreateAntSwarm();
+
+            Menu.ClearScreen();
+            Menu.PrintLogo();
+            new DungeonManager().RunBossFight();
 
         }
 
