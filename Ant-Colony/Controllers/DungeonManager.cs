@@ -37,16 +37,19 @@ namespace Ant_Colony.Controllers
             //!!!!!!!!!!!!!IMPORTANT!!!!!!!!!!!!!
             //Add any additional logic to have the battle run as intended here
             SimulateDungeon(true);
+            
         }
 
         public bool SimulateDungeon(bool isBossFight)
         {
-            SetupDungeon();
+            SetupDungeon(isBossFight);
             bool enemiesToFight = enemies.Count != 0;
             bool didNotEscape = true;
             int playerHealth = ants.Count();
             int playerMoves = ants.Count();
 
+            Menu.ClearScreen();
+            Menu.PrintLogo();
             do
             {
                 Menu.PrintCombatScreen(ants, enemies);
@@ -72,7 +75,15 @@ namespace Ant_Colony.Controllers
                         }
 
                         // Attack Enemies
-                        Enemies enemyBeingAttacked = Menu.SelectEnemy(enemies);
+                        Enemies enemyBeingAttacked;
+                        do
+                        { 
+                            enemyBeingAttacked = Menu.SelectEnemy(enemies);
+                            if (enemies.Count <= 0)
+                            {
+                                break;
+                            }
+                        } while (enemyBeingAttacked == null);
                         CombatManager.AttackEnemy(atkTotal, enemyBeingAttacked);
                         Menu.Print($"{enemyBeingAttacked.Name} took {atkTotal} damage!", true, ConsoleColor.Green);
 
@@ -102,6 +113,7 @@ namespace Ant_Colony.Controllers
                         {
                             Menu.Print("You IDIOT! You can't run now. You lose 1 ant from foolishness", true, ConsoleColor.Red);
                             AntManager.PopRandomAnt(1);
+                            break;
                         }
 
                         Random rnd = new Random();
@@ -124,7 +136,7 @@ namespace Ant_Colony.Controllers
             } while (enemiesToFight && playerHealth != 0 && playerMoves != 0 && didNotEscape);
 
             // Handle Boss Fight outcomes
-            if (isBossFight && enemiesToFight)
+            if (isBossFight && !enemiesToFight)
             {
                 Menu.Print("Your colony has emerged victorious!");
                 return true;
@@ -191,7 +203,7 @@ namespace Ant_Colony.Controllers
             {
                 foreach( BaseAnt ant in AntManager.AntSwarm)
                 {
-                    defence += ant.BASE_DEFENCE;
+                    defence += ant.GetDefenceAmount();
                 }
                 return defence;
             }
@@ -215,7 +227,7 @@ namespace Ant_Colony.Controllers
 
             foreach(BaseAnt ant in defAnts)
             {
-                defence += ant.BASE_DEFENCE;
+                defence += ant.GetDefenceAmount();
             }
 
 
@@ -227,15 +239,19 @@ namespace Ant_Colony.Controllers
             int attackTotal = 0;
             foreach(BaseAnt ant in attackAnts)
             {
-                attackTotal += ant.BASE_DAMAGE;
+                attackTotal += ant.GetAttackDamage();
             }
             return attackTotal;
         }
 
-        public void SetupDungeon()
+        public void SetupDungeon(bool isBoss = false)
         {
             int eventNum = EventManager.DungeonEventGetter();
-
+            if (isBoss)
+            {
+                BossSetup(eventNum);
+                return;
+            }
             switch(eventNum){
                 case 0:
                     EnemySetup(1);
@@ -269,6 +285,21 @@ namespace Ant_Colony.Controllers
             }
         }
 
+        public void BossSetup(int eventNum)
+        {
+            switch (eventNum)
+            {
+
+                case 1: 
+                    enemies.Add(new Enemies(new Stats() { atk=15, def=75}, "Dung Beetle", 10, 750, 10000, true));
+                    enemies.Add(new Enemies(new Stats() { atk=45, def=30}, "Bombadier Bettle", 10, 300, 10000, true));
+                    break;
+                default:
+                    enemies.Add(new Enemies(new Stats() { atk=100, def=100}, "Ant eater", 10, 500, 10000, true));
+                    break;
+            }
+            enemyListForExp = enemies.ToList();
+        }
 
         public void EnemySetup(int eventNum)
         {

@@ -58,5 +58,11 @@ namespace Ant_Colony.Controllers
             Food = 0;
             Leaves = 0;
         }
+
+        public static void SetDemoResourceAmounts()
+        {
+            Food = 20;
+            Leaves = 20;
+        }
     }
 }

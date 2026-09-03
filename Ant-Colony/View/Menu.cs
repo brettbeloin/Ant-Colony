@@ -99,7 +99,7 @@ namespace Ant_Colony.View
         public static int MainMenu(string[]? extraOptions = null )
         {
             Print("Please choose an action", true, ConsoleColor.Blue);
-            List<string> options = new List<string>{"Gather Leaves", "Tend Aphid Farm", "Nourish Larvae", "Enter The Dungeon" };
+            List<string> options = new List<string>{"Gather Leaves", "Tend Aphid Farm", "Nourish Larvae", "Feed Battle Swarm", "Enter The Dungeon", "End Day Early"};
             if (extraOptions != null)
             {
                 foreach(string option in extraOptions)
@@ -112,7 +112,7 @@ namespace Ant_Colony.View
         
         public static bool VerifyAction(string prompt = "Are you sure?")
         {
-            return CIO.PromptForBool(prompt, "yes", "no");
+            return CIO.PromptForBool(prompt + " (yes/no)\n", "yes", "no");
         }
 
 
@@ -120,11 +120,12 @@ namespace Ant_Colony.View
         /// Prompts the player for an ant type and the amount of ants 
         /// </summary>
         /// <param name="max">the max number of ants that the use can ask for</param>
-        /// <returns>returns an array of length 2 that holds an ant type as an int in the first slot, and the amount in the second</returns>
-        public static int[] SelectAntTypeAndAmount(int max)
+        /// <returns>returns an array of length 2 that holds an ant type as an int in the first slot (it has -1 if allow cancle is true and the user cancled), and the amount in the second</returns>
+        public static int[] SelectAntTypeAndAmount(int max, bool allowCancle = false)
         {
-            int antType = SelectAntType("Please select an ant type to allocate")-1;
-
+            int antType = SelectAntType("Please select an ant type to allocate", allowCancle);
+            if (antType <= 0 && allowCancle) return [-1, 0];
+            antType -= 1;
             int amount = SelectAmount(max);
             return [antType, amount];
         }
@@ -135,7 +136,7 @@ namespace Ant_Colony.View
             {
                 throw new ArgumentException("Max cannot be 0");
             }
-            return CIO.PromptForInt($"Type the amount of ants: (0 - {max})\n", 0, max);
+            return CIO.PromptForInt($"Type the amount you want: (0 - {max})\n", 0, max);
         }
 
         public static int SelectCombatOptions() 
@@ -155,6 +156,7 @@ namespace Ant_Colony.View
             StringBuilder enemyBars = new StringBuilder();
             StringBuilder enemyStats = new StringBuilder();
             Print("Enemies", foregroundColor:ConsoleColor.Red);
+            
             foreach (Enemies enemy in enemies) 
             {
                 string[] enemyBar = PrintBar(enemy.Health, enemy.MaxHealth, Label: $"{enemy.Name}", shouldPrint: false);
@@ -164,12 +166,15 @@ namespace Ant_Colony.View
                 AlignText(enemyBar[0], ref battleStats);
                 enemyStats.Append(battleStats);
             }
-            
+                   
 
             Print(enemyNames.ToString(),foregroundColor:ConsoleColor.Red);
             Print(enemyBars.ToString(),foregroundColor:ConsoleColor.Red);
-            Print(enemyStats.ToString(),foregroundColor:ConsoleColor.Red);
-
+            Print(enemyStats.ToString(),foregroundColor:ConsoleColor.Red); 
+            if (enemies.Count == 0)
+            {
+                Print("It seems that there are no enemies here.");
+            }
             PrintBar(AntManager.AntSwarm.Count, 10, Label: "Ants Remaining:" , displayColor: ConsoleColor.Green);
 
             Print($"Reminder:\n\tattack : defence\n\tDamage taken will kill ants", foregroundColor: ConsoleColor.Yellow);
@@ -255,8 +260,6 @@ namespace Ant_Colony.View
         /// <returns>returns an int for the type of ant, ranging from 0-2</returns>
         public static int SelectAntType(string prompt = "Please Select an ant type", bool AllowQuit = false)
         {
-            ClearScreen();
-            PrintLogo();
             Print(prompt, true, ConsoleColor.Blue);
             string[] antTypes = { "Worker Ant", "Leaf Cutter Ant", "Brood Ant" };
             return CIO.PromptForMenuSelection(antTypes, AllowQuit);

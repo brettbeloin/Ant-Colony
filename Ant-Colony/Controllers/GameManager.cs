@@ -32,8 +32,10 @@ namespace Ant_Colony.Controllers
                     SetMenuScreen();
                     EndDay();
                 }
+                if (daysUntilFinalBoss <= 0) break;
                 extraOptions = null;
             } while (true);
+            RunFinalBoss();
         }
         
         public static void EndDay()
@@ -74,20 +76,49 @@ namespace Ant_Colony.Controllers
                     FeedLarvae();
                     break;
                 case 4:
-                    EnterDungeon();
+                    FeedTroops();
                     break;
                 case 5:
-                    AntManager.SetDemoConfig();
+                    EnterDungeon();
                     break;
                 case 6:
+                    EndDay();
+                    break;
+                case 7:
+                    AntManager.SetDemoConfig();
+                    ResourceManager.SetDemoResourceAmounts();
+                    break;
+                case 8:
                     Menu.PrintTutorial();
                     break;
                 default: return;
             }
         }
 
+        public static void FeedTroops()
+        {
+            List<BaseAnt> swarm = AntManager.AntSwarm;
+            int food = ResourceManager.EatFood(Menu.SelectAmount(ResourceManager.Food));
+
+            for (int i = 0; i < food; i++) 
+            { 
+                swarm[i % swarm.Count].LevelUp();
+            }
+
+
+        }
+
         public static void RunFinalBoss()
         {
+            Menu.ClearScreen();
+            Menu.PrintLogo();
+            DisplayStats();
+            Menu.Print("It is time for the invasion", foregroundColor: ConsoleColor.Red);
+            AntManager.CreateAntSwarm();
+
+            Menu.ClearScreen();
+            Menu.PrintLogo();
+            new DungeonManager().RunBossFight();
 
         }
 
@@ -140,7 +171,11 @@ namespace Ant_Colony.Controllers
         {
             Menu.ClearScreen();
             Menu.PrintLogo();
+            DisplayStats();
             AntManager.CreateAntSwarm();
+
+            Menu.ClearScreen();
+            Menu.PrintLogo();
             new DungeonManager().RunDungeon();
         }
     }
