@@ -74,16 +74,33 @@ namespace Ant_Colony.Controllers
                     FeedLarvae();
                     break;
                 case 4:
-                    EnterDungeon();
+                    FeedTroops();
                     break;
                 case 5:
-                    AntManager.SetDemoConfig();
+                    EnterDungeon();
                     break;
                 case 6:
+                    AntManager.SetDemoConfig();
+                    ResourceManager.SetDemoResourceAmounts();
+                    break;
+                case 7:
                     Menu.PrintTutorial();
                     break;
                 default: return;
             }
+        }
+
+        public static void FeedTroops()
+        {
+            List<BaseAnt> swarm = AntManager.AntSwarm;
+            int food = ResourceManager.EatFood(Menu.SelectAmount(ResourceManager.Food));
+
+            for (int i = 0; i < food; i++) 
+            { 
+                swarm[i % swarm.Count].LevelUp();
+            }
+
+
         }
 
         public static void RunFinalBoss()
@@ -140,7 +157,11 @@ namespace Ant_Colony.Controllers
         {
             Menu.ClearScreen();
             Menu.PrintLogo();
+            DisplayStats();
             AntManager.CreateAntSwarm();
+
+            Menu.ClearScreen();
+            Menu.PrintLogo();
             new DungeonManager().RunDungeon();
         }
     }

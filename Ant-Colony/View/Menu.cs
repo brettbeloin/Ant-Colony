@@ -99,7 +99,7 @@ namespace Ant_Colony.View
         public static int MainMenu(string[]? extraOptions = null )
         {
             Print("Please choose an action", true, ConsoleColor.Blue);
-            List<string> options = new List<string>{"Gather Leaves", "Tend Aphid Farm", "Nourish Larvae", "Enter The Dungeon" };
+            List<string> options = new List<string>{"Gather Leaves", "Tend Aphid Farm", "Nourish Larvae", "Feed Battle Swarm", "Enter The Dungeon" };
             if (extraOptions != null)
             {
                 foreach(string option in extraOptions)
@@ -112,7 +112,7 @@ namespace Ant_Colony.View
         
         public static bool VerifyAction(string prompt = "Are you sure?")
         {
-            return CIO.PromptForBool(prompt, "yes", "no");
+            return CIO.PromptForBool(prompt + " (yes/no)\n", "yes", "no");
         }
 
 
@@ -123,8 +123,8 @@ namespace Ant_Colony.View
         /// <returns>returns an array of length 2 that holds an ant type as an int in the first slot, and the amount in the second</returns>
         public static int[] SelectAntTypeAndAmount(int max)
         {
-            int antType = SelectAntType("Please select an ant type to allocate")-1;
-
+            int antType = SelectAntType("Please select an ant type to allocate", true)-1;
+            if (antType <= 0) return [0, 0];
             int amount = SelectAmount(max);
             return [antType, amount];
         }
@@ -135,7 +135,7 @@ namespace Ant_Colony.View
             {
                 throw new ArgumentException("Max cannot be 0");
             }
-            return CIO.PromptForInt($"Type the amount of ants: (0 - {max})\n", 0, max);
+            return CIO.PromptForInt($"Type the amount you want: (0 - {max})\n", 0, max);
         }
 
         public static int SelectCombatOptions() 
@@ -255,8 +255,6 @@ namespace Ant_Colony.View
         /// <returns>returns an int for the type of ant, ranging from 0-2</returns>
         public static int SelectAntType(string prompt = "Please Select an ant type", bool AllowQuit = false)
         {
-            ClearScreen();
-            PrintLogo();
             Print(prompt, true, ConsoleColor.Blue);
             string[] antTypes = { "Worker Ant", "Leaf Cutter Ant", "Brood Ant" };
             return CIO.PromptForMenuSelection(antTypes, AllowQuit);
